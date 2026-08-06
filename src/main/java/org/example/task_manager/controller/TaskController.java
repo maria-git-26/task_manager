@@ -17,8 +17,24 @@ public class TaskController {
         this.service = service;
     }
 
-    @GetMapping
+
+    @GetMapping("/tasks")
     public List<Task> getTasks() {
+
         return service.getAllTasks();
+    }
+
+    @GetMapping("/tasks/{id}")
+    public Task getTask(
+            @PathVariable Long id) {
+
+        return service.getTaskById(id);
+    }
+
+    @DeleteMapping("/tasks/{id}")
+    public void deleteTask(
+            @PathVariable Long id) {
+
+        service.deleteTask(id);
     }
 }

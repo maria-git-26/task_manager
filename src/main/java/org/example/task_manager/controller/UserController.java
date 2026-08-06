@@ -1,5 +1,6 @@
 package org.example.task_manager.controller;
 
+import org.example.task_manager.entity.Task;
 import org.example.task_manager.entity.User;
 import org.example.task_manager.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -19,5 +20,19 @@ public class UserController {
     @GetMapping
     public List<User> getUsers() {
         return service.getAllUsers();
+    }
+
+    @GetMapping("/users/{id}")
+    public User getUser(
+            @PathVariable Long id) {
+
+        return service.getUserById(id);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteTask(
+            @PathVariable Long id) {
+
+        service.deleteUser(id);
     }
 }

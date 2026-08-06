@@ -18,4 +18,19 @@ public class UserService {
     public List<User> getAllUsers() {
         return repository.findAll();
     }
+
+    public void createUser(User user) {
+        repository.save(user);
+    }
+
+    public User getUserById(Long id) {
+
+        return repository.findById(id)
+                .orElse(null);
+    }
+
+    public void deleteUser(Long id) {
+
+        repository.deleteById(id);
+    }
 }

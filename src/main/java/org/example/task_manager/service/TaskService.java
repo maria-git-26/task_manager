@@ -19,4 +19,19 @@ public class TaskService {
     public List<Task> getAllTasks() {
         return repository.findAll();
     }
+
+    public void createTask(Task task) {
+        repository.save(task);
+    }
+
+    public Task getTaskById(Long id) {
+
+        return repository.findById(id)
+                .orElse(null);
+    }
+
+    public void deleteTask(Long id) {
+
+        repository.deleteById(id);
+    }
 }
