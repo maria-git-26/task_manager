@@ -18,13 +18,12 @@ public class TaskController {
     }
 
 
-    @GetMapping("/tasks")
+    @GetMapping("/getTasks")
     public List<Task> getTasks() {
-
         return service.getAllTasks();
     }
 
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     public Task getTask(
             @PathVariable Long id) {
 
@@ -36,5 +35,10 @@ public class TaskController {
             @PathVariable Long id) {
 
         service.deleteTask(id);
+    }
+
+    @PostMapping
+    public Task createTask(@RequestBody Task task) {
+        return service.createTask(task);
     }
 }

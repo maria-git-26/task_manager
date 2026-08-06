@@ -19,8 +19,9 @@ public class UserService {
         return repository.findAll();
     }
 
-    public void createUser(User user) {
+    public User createUser(User user) {
         repository.save(user);
+        return user;
     }
 
     public User getUserById(Long id) {

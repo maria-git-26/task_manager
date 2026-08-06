@@ -20,8 +20,9 @@ public class TaskService {
         return repository.findAll();
     }
 
-    public void createTask(Task task) {
+    public Task createTask(Task task) {
         repository.save(task);
+        return task;
     }
 
     public Task getTaskById(Long id) {
