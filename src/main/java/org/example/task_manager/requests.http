@@ -7,3 +7,13 @@ Content-Type: application/json
   "status": "In process",
   "priority": "Mid"
 }
+
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+"title": "Creating task",
+"description": "Trying creating",
+"status": "In process",
+"priority": "Mid"
+}

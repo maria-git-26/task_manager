@@ -1,5 +1,7 @@
 package org.example.task_manager.controller;
 
+import org.example.task_manager.dto.UserRequest;
+import org.example.task_manager.dto.UserResponse;
 import org.example.task_manager.entity.Task;
 import org.example.task_manager.entity.User;
 import org.example.task_manager.service.UserService;
@@ -37,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return service.createUser(user);
+    public UserResponse createUser(@RequestBody UserRequest request) {
+        return service.createUser(request);
     }
 }

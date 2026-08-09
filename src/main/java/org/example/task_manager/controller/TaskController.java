@@ -1,5 +1,7 @@
 package org.example.task_manager.controller;
 
+import org.example.task_manager.dto.TaskRequest;
+import org.example.task_manager.dto.TaskResponse;
 import org.example.task_manager.entity.Task;
 import org.example.task_manager.service.TaskService;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +40,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return service.createTask(task);
+    public TaskResponse createTask(@RequestBody TaskRequest request) {
+        return service.createTask(request);
     }
 }

@@ -1,5 +1,7 @@
 package org.example.task_manager.service;
 
+import org.example.task_manager.dto.TaskRequest;
+import org.example.task_manager.dto.TaskResponse;
 import org.example.task_manager.entity.Task;
 import org.example.task_manager.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -20,9 +22,23 @@ public class TaskService {
         return repository.findAll();
     }
 
-    public Task createTask(Task task) {
-        repository.save(task);
-        return task;
+    public TaskResponse createTask(TaskRequest request) {
+        Task task = new Task();
+
+        task.setTitle(request.title());
+        task.setDescription(request.description());
+        task.setPriority(request.priority());
+        task.setStatus(request.status());
+
+        Task savedTask = repository.save(task);
+
+        return new TaskResponse(
+                savedTask.getId(),
+                savedTask.getTitle(),
+                savedTask.getDescription(),
+                savedTask.getStatus(),
+                savedTask.getPriority()
+        );
     }
 
     public Task getTaskById(Long id) {
