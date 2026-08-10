@@ -1,5 +1,6 @@
 package org.example.task_manager.controller;
 
+import jakarta.validation.Valid;
 import org.example.task_manager.dto.UserRequest;
 import org.example.task_manager.dto.UserResponse;
 import org.example.task_manager.entity.Task;
@@ -24,14 +25,14 @@ public class UserController {
         return service.getAllUsers();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public User getUser(
             @PathVariable Long id) {
 
         return service.getUserById(id);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public void deleteTask(
             @PathVariable Long id) {
 
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponse createUser(@RequestBody UserRequest request) {
+    public UserResponse createUser(@Valid @RequestBody UserRequest request) {
         return service.createUser(request);
     }
 }

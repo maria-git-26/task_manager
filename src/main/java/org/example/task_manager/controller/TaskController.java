@@ -1,5 +1,6 @@
 package org.example.task_manager.controller;
 
+import jakarta.validation.Valid;
 import org.example.task_manager.dto.TaskRequest;
 import org.example.task_manager.dto.TaskResponse;
 import org.example.task_manager.entity.Task;
@@ -40,7 +41,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public TaskResponse createTask(@RequestBody TaskRequest request) {
+    public TaskResponse createTask(@Valid @RequestBody TaskRequest request) {
         return service.createTask(request);
     }
 }

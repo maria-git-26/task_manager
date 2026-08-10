@@ -3,6 +3,7 @@ package org.example.task_manager.service;
 import org.example.task_manager.dto.TaskRequest;
 import org.example.task_manager.dto.TaskResponse;
 import org.example.task_manager.entity.Task;
+import org.example.task_manager.exception.ResourceNotFoundException;
 import org.example.task_manager.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -44,7 +45,11 @@ public class TaskService {
     public Task getTaskById(Long id) {
 
         return repository.findById(id)
-                .orElse(null);
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Task with id "
+                                        + id +
+                                        " not found"));
     }
 
     public void deleteTask(Long id) {
