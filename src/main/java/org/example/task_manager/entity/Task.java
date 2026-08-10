@@ -27,7 +27,9 @@ public class Task {
     @Setter
     private String priority;
 
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
 

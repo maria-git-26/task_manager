@@ -9,6 +9,7 @@ import org.example.task_manager.entity.User;
 import org.example.task_manager.exception.EmailAlreadyExistsException;
 import org.example.task_manager.exception.ResourceNotFoundException;
 import org.example.task_manager.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -16,21 +17,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
 
-    public List<User> getAllUsers() {
-        return repository.findAll();
+    public List<UserResponse> getAllUsers() {
+        return repository.findAll()
+                .stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getEmail()
+                ))
+                .toList();
     }
 
     public UserResponse createUser(UserRequest request) {
-//        User user = User.builder()
-//                .username(request.username())
-//                .email(request.email())
-//                .passw(request.passw())
-//                .build();
-//        User savedUser = repository.save(user);
-
-
 
         if (repository.existsByEmail(request.email())) {
             throw new EmailAlreadyExistsException(
@@ -39,10 +40,12 @@ public class UserService {
         }
 
         User user = new User();
+        String encodedPassword =
+                passwordEncoder.encode(request.passw());
 
         user.setUsername(request.username());
         user.setEmail(request.email());
-        user.setPassw(request.passw());
+        user.setPassw(encodedPassword);
 
         repository.save(user);
 
@@ -53,14 +56,20 @@ public class UserService {
 
     }
 
-    public User getUserById(Long id) {
+    public UserResponse getUserById(Long id) {
 
-        return repository.findById(id)
+        User user = repository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "User with id "
                                         + id +
                                         " not found"));
+
+        return new UserResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail()
+        );
     }
 
     public void deleteUser(Long id) {

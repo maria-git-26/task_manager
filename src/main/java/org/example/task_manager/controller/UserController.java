@@ -21,26 +21,28 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getUsers() {
+    public List<UserResponse> getUsers() {
         return service.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public User getUser(
+    public UserResponse getUser(
             @PathVariable Long id) {
 
         return service.getUserById(id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTask(
+    public void deleteUser(
             @PathVariable Long id) {
 
         service.deleteUser(id);
     }
 
-    @PostMapping
-    public UserResponse createUser(@Valid @RequestBody UserRequest request) {
-        return service.createUser(request);
-    }
+//    @PostMapping
+//    public UserResponse createUser(@Valid @RequestBody UserRequest request) {
+//        return service.createUser(request);
+//    }
+
+
 }

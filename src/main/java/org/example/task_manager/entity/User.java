@@ -2,6 +2,8 @@ package org.example.task_manager.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
@@ -25,4 +27,7 @@ public class User {
     @Getter
     @Setter
     private String passw;
+
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks;
 }

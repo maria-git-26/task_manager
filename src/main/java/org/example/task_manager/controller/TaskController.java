@@ -22,15 +22,22 @@ public class TaskController {
 
 
     @GetMapping("/getTasks")
-    public List<Task> getTasks() {
+    public List<TaskResponse> getTasks() {
         return service.getAllTasks();
     }
 
     @GetMapping("/{id}")
-    public Task getTask(
+    public TaskResponse getTask(
             @PathVariable Long id) {
 
         return service.getTaskById(id);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<TaskResponse> getTasksByUser(
+            @PathVariable Long userId) {
+
+        return service.getTasksByUserId(userId);
     }
 
     @DeleteMapping("/tasks/{id}")

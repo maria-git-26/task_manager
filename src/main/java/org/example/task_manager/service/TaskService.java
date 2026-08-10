@@ -2,6 +2,7 @@ package org.example.task_manager.service;
 
 import org.example.task_manager.dto.TaskRequest;
 import org.example.task_manager.dto.TaskResponse;
+import org.example.task_manager.dto.UserResponse;
 import org.example.task_manager.entity.Task;
 import org.example.task_manager.exception.ResourceNotFoundException;
 import org.example.task_manager.repository.TaskRepository;
@@ -19,8 +20,18 @@ public class TaskService {
         this.repository = repository;
     }
 
-    public List<Task> getAllTasks() {
-        return repository.findAll();
+    public List<TaskResponse> getAllTasks() {
+
+        return repository.findAll()
+                .stream()
+                .map(task -> new TaskResponse(
+                        task.getId(),
+                        task.getTitle(),
+                        task.getDescription(),
+                        task.getStatus(),
+                        task.getPriority()
+                ))
+                .toList();
     }
 
     public TaskResponse createTask(TaskRequest request) {
@@ -42,14 +53,36 @@ public class TaskService {
         );
     }
 
-    public Task getTaskById(Long id) {
+    public TaskResponse getTaskById(Long id) {
 
-        return repository.findById(id)
+        Task task = repository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "Task with id "
                                         + id +
                                         " not found"));
+
+        return new TaskResponse(
+                task.getId(),
+                task.getTitle(),
+                task.getDescription(),
+                task.getStatus(),
+                task.getPriority()
+        );
+    }
+
+    public List<TaskResponse> getTasksByUserId(Long userId) {
+
+        return repository.findByUserId(userId)
+                .stream()
+                .map(task -> new TaskResponse(
+                        task.getId(),
+                        task.getTitle(),
+                        task.getDescription(),
+                        task.getStatus(),
+                        task.getPriority()
+                ))
+                .toList();
     }
 
     public void deleteTask(Long id) {
