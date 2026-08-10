@@ -41,11 +41,11 @@ public class UserService {
 
         User user = new User();
         String encodedPassword =
-                passwordEncoder.encode(request.passw());
+                passwordEncoder.encode(request.password());
 
         user.setUsername(request.username());
         user.setEmail(request.email());
-        user.setPassw(encodedPassword);
+        user.setPassword(encodedPassword);
 
         repository.save(user);
 

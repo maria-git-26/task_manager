@@ -12,7 +12,7 @@ public record UserRequest(
         @NotBlank(message = "Password cannot be empty")
         @Size(min = 5, max = 100,
                 message = "Password must be at least 8 characters")
-        String passw,
+        String password,
         @NotBlank(message = "Email cannot be empty")
         @Email(message = "Invalid email format")
         String email

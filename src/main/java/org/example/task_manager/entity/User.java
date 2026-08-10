@@ -4,6 +4,8 @@ import lombok.*;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
@@ -12,21 +14,14 @@ import java.util.List;
 public class User {
 
     @Id
-    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Getter
-    @Setter
     private String username;
 
-    @Getter
-    @Setter
     private String email;
 
-    @Getter
-    @Setter
-    private String passw;
+    private String password;
 
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;
