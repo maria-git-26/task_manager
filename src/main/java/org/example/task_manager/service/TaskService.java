@@ -4,8 +4,11 @@ import org.example.task_manager.dto.TaskRequest;
 import org.example.task_manager.dto.TaskResponse;
 import org.example.task_manager.dto.UserResponse;
 import org.example.task_manager.entity.Task;
+import org.example.task_manager.entity.User;
 import org.example.task_manager.exception.ResourceNotFoundException;
 import org.example.task_manager.repository.TaskRepository;
+import org.example.task_manager.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -13,11 +16,13 @@ import java.util.List;
 public class TaskService {
 
     private final TaskRepository repository;
+    private final UserRepository userRepository;
 
     public TaskService(
-            TaskRepository repository
+            TaskRepository repository, UserRepository userRepository
     ) {
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     public List<TaskResponse> getAllTasks() {
@@ -88,5 +93,22 @@ public class TaskService {
     public void deleteTask(Long id) {
 
         repository.deleteById(id);
+    }
+
+    private User getCurrentUser() {
+
+        String username =
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getName();
+
+        return userRepository
+                .findByUsername(username)
+                .orElseThrow(
+                        () -> new RuntimeException(
+                                "User not found"
+                        )
+                );
     }
 }

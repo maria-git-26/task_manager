@@ -3,8 +3,12 @@ package org.example.task_manager.service;
 import lombok.RequiredArgsConstructor;
 import org.example.task_manager.dto.LoginRequest;
 import org.example.task_manager.dto.LoginResponse;
+import org.example.task_manager.dto.RegisterRequest;
 import org.example.task_manager.entity.User;
 import org.example.task_manager.repository.UserRepository;
+import org.example.task_manager.security.JwtService;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,25 +20,36 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final JwtService jwtService;
+
     public LoginResponse login(LoginRequest request) {
 
-        User user =
-                userRepository.findByEmail(
-                                request.email())
-                        .orElseThrow(
-                                () -> new RuntimeException(
-                                        "User not found"));
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(
+                                "User with email "
+                                        + request.email()
+                                        + " not found"
+                        )
+                );
 
-        boolean matches =
+        boolean passwordMatches =
                 passwordEncoder.matches(
                         request.password(),
-                        user.getPassword());
+                        user.getPassword()
+                );
 
-        if (!matches) {
-            throw new RuntimeException(
-                    "Wrong password");
+        if (!passwordMatches) {
+            throw new BadCredentialsException(
+                    "Invalid email or password"
+            );
         }
-        return new LoginResponse(
-                "JWT_TOKEN");
+
+        String token =
+                jwtService.generateToken(user.getUsername());
+
+        return new LoginResponse(token);
     }
+
+
 }
