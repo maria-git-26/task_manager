@@ -8,6 +8,7 @@ import org.example.task_manager.entity.User;
 import org.example.task_manager.exception.ResourceNotFoundException;
 import org.example.task_manager.repository.TaskRepository;
 import org.example.task_manager.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -27,7 +28,10 @@ public class TaskService {
 
     public List<TaskResponse> getAllTasks() {
 
-        return repository.findAll()
+        User currentUser =
+                getCurrentUser();
+        return repository.findByUser(currentUser)
+
                 .stream()
                 .map(task -> new TaskResponse(
                         task.getId(),
@@ -41,11 +45,14 @@ public class TaskService {
 
     public TaskResponse createTask(TaskRequest request) {
         Task task = new Task();
+        User currentUser =
+                getCurrentUser();
 
         task.setTitle(request.title());
         task.setDescription(request.description());
         task.setPriority(request.priority());
         task.setStatus(request.status());
+        task.setUser(currentUser);
 
         Task savedTask = repository.save(task);
 
@@ -60,12 +67,20 @@ public class TaskService {
 
     public TaskResponse getTaskById(Long id) {
 
-        Task task = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Task with id "
-                                        + id +
-                                        " not found"));
+        User currentUser =
+                getCurrentUser();
+
+        Task task =
+                repository
+                        .findByIdAndUser(
+                                id,
+                                currentUser
+                        )
+                        .orElseThrow(
+                                () -> new ResourceNotFoundException(
+                                        "Task not found"
+                                )
+                        );
 
         return new TaskResponse(
                 task.getId(),
@@ -78,7 +93,9 @@ public class TaskService {
 
     public List<TaskResponse> getTasksByUserId(Long userId) {
 
-        return repository.findByUserId(userId)
+        User currentUser =
+                getCurrentUser();
+        return repository.findByIdAndUser(userId,currentUser)
                 .stream()
                 .map(task -> new TaskResponse(
                         task.getId(),
@@ -91,24 +108,52 @@ public class TaskService {
     }
 
     public void deleteTask(Long id) {
+        User currentUser =
+                getCurrentUser();
 
-        repository.deleteById(id);
+        repository.deleteByIdAndUser(id, currentUser);
+        //repository.deleteById(id);
     }
 
     private User getCurrentUser() {
 
-        String username =
+        Authentication authentication =
                 SecurityContextHolder
                         .getContext()
-                        .getAuthentication()
-                        .getName();
+                        .getAuthentication();
 
-        return userRepository
-                .findByUsername(username)
-                .orElseThrow(
-                        () -> new RuntimeException(
-                                "User not found"
-                        )
-                );
+        System.out.println(
+                "AUTHENTICATION = "
+                        + authentication
+        );
+
+        System.out.println(
+                "USERNAME = "
+                        + authentication.getName()
+        );
+
+        String username =
+                authentication.getName();
+
+        User user =
+                userRepository
+                        .findByUsername(username)
+                        .orElseThrow(
+                                () -> new RuntimeException(
+                                        "User not found"
+                                )
+                        );
+
+        System.out.println(
+                "CURRENT USER ID = "
+                        + user.getId()
+        );
+
+        System.out.println(
+                "CURRENT USERNAME = "
+                        + user.getUsername()
+        );
+
+        return user;
     }
 }

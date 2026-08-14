@@ -49,6 +49,7 @@ public class TaskController {
 
     @PostMapping
     public TaskResponse createTask(@Valid @RequestBody TaskRequest request) {
+        System.out.println(">>> CREATE TASK CONTROLLER");
         return service.createTask(request);
     }
 }
