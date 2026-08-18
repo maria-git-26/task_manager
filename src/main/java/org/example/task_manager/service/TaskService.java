@@ -1,5 +1,6 @@
 package org.example.task_manager.service;
 
+import jakarta.transaction.Transactional;
 import org.example.task_manager.dto.TaskRequest;
 import org.example.task_manager.dto.TaskResponse;
 import org.example.task_manager.dto.UserResponse;
@@ -107,6 +108,7 @@ public class TaskService {
                 .toList();
     }
 
+    @Transactional
     public void deleteTask(Long id) {
         User currentUser =
                 getCurrentUser();

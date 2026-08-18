@@ -5,6 +5,7 @@ import org.example.task_manager.dto.TaskRequest;
 import org.example.task_manager.dto.TaskResponse;
 import org.example.task_manager.entity.Task;
 import org.example.task_manager.service.TaskService;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -42,8 +43,8 @@ public class TaskController {
 
     @DeleteMapping("/tasks/{id}")
     public void deleteTask(
-            @PathVariable Long id) {
-
+            @PathVariable Long id, Authentication authentication) {
+        System.out.println(authentication);
         service.deleteTask(id);
     }
 
