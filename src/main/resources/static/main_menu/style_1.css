@@ -1,0 +1,137 @@
+
+
+.open-btn {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 12px;
+    background: #1b4fff;
+    color: white;
+    cursor: pointer;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    width: 700px;
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.15);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.modal-header h2 {
+    font-size: 32px;
+}
+
+.close-btn {
+    border: none;
+    background: #f2f4f7;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+label {
+    font-weight: 600;
+    color: #222;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #d7dce5;
+    border-radius: 12px;
+    font-size: 15px;
+    outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #34b6ff;
+    box-shadow: 0 0 0 4px rgba(52,182,255,.15);
+}
+
+.row {
+    display: flex;
+    gap: 15px;
+}
+
+.field {
+    flex: 1;
+}
+
+.priority-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.priority-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.cancel-btn {
+    border: none;
+    background: #f0f2f5;
+    padding: 12px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.create-btn {
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+
+    background: linear-gradient(
+        135deg,
+        #00c6ff,
+        #0072ff
+    );
+
+    box-shadow: 0 0 20px rgba(0, 153, 255, .5);
+}
