@@ -31,17 +31,28 @@ public class SecurityConfig {
 
         return http
                 .csrf(csrf -> csrf.disable())
+
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers(
+//                                "/auth/**",
+//                                "/login.html",
+//                                "/register.html",
+//                                "/css/**",
+//                                "/js/**"
+//                        ).permitAll()
+//                        .anyRequest()
+//                        .authenticated()
+//                )
+//                .addFilterBefore(
+//                        jwtAuthenticationFilter,
+//                        UsernamePasswordAuthenticationFilter.class
+//                )
+
+
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/auth/**"
-                        ).permitAll()
-                        .anyRequest()
-                        .authenticated()
+                        .anyRequest().permitAll()
                 )
-                .addFilterBefore(
-                        jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class
-                )
+
 
                 .build();
     }
