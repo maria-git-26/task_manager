@@ -17,3 +17,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+document
+    .getElementById("register-form")
+    .addEventListener("submit", register);
+console.log("Button clicked");
+
+async function register() {
+
+  const response = await fetch(
+      "http://localhost:8080/auth/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          password: document.getElementById("confirm-password").value
+        })
+      }
+  );
+
+  if (response.ok) {
+    document.getElementById("message").innerText =
+        "Registration successful!";
+  } else {
+    const error = await response.json();
+
+    document.getElementById("message").innerText =
+        error.message;
+  }
+
+    if (response.ok) {
+
+        window.location.href =
+            "/login/index.html";
+    }
+}

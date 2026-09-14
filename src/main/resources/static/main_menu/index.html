@@ -417,6 +417,102 @@
   border-color: #fff;
 }
 
+.tasks-body {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .donut {
+      width: 98px;
+      height: 98px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      flex: 0 0 98px;
+      border-radius: 50%;
+      background: conic-gradient(
+        #377bb9 0 50%,
+        #e2a05f 50% 70%,
+        #55ad8d 70% 100%
+      );
+    }
+
+    .donut::after {
+      content: "";
+      width: 72px;
+      height: 72px;
+      position: absolute;
+      border-radius: 50%;
+      background: #edf7fa;
+      box-shadow: inset 0 1px 3px rgba(63, 105, 121, .15);
+    }
+
+    .donut.dark-theme::after {
+      background: #272d37;   
+    }
+
+    
+
+    .donut-content {
+      z-index: 2;
+      text-align: center;
+      font-size: 10px;
+      margin-bottom: 10px;
+    }
+
+    .donut-content strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 19px;
+      font-weight: 400;
+      height: 30px;
+    }
+
+    .legend {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      font-size: 10px;
+    }
+
+    .legend-row {
+      display: grid;
+      grid-template-columns: 8px 1fr auto;
+      align-items: center;
+      gap: 5px;
+      min-width: 115px;
+    }
+
+    .legend-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #377bb9;
+    }
+
+    .legend-dot.orange {
+      background: #df9d5d;
+    }
+
+    .legend-dot.green {
+      background: #59a984;
+    }
+
+    .legend strong {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .legend em {
+      color: #738590;
+      font-style: normal;
+    }
+
+
 
         .dashboard-grid {
             display: grid;

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SynQ — Регистрация</title>
 <link rel="stylesheet" href="test_1.css">
+<link rel="icon" type="image/png" href="check.png">
 </head>
 <body>
 
@@ -99,7 +100,7 @@
           </div>
         </div>
 
-        <button type="submit" class="btn-primary">Зарегистрироваться</button>
+        <button type="submit" class="btn-primary" onclick="register()">Зарегистрироваться</button>
 
         <div class="divider"><span>or sign up with</span></div>
 
@@ -124,7 +125,7 @@
         </button>
 
         <p class="signup">Уже есть аккаунт? <a href="../login/index.html">Войти</a></p>
-
+        <p id="message"></p>
       </form>
     </section>
 

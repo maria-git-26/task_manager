@@ -1,4 +1,26 @@
+:root {
+            --bg-gradient: linear-gradient(135deg, #e3edf7 0%, #d8e5f3 100%);
+            --card-bg: rgba(255, 255, 255, 0.65);
+            --card-border: rgba(255, 255, 255, 0.8);
+            --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            --accent-blue: #00a8ff;
+            --accent-glow: 0 0 15px rgba(0, 168, 255, 0.5);
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --radius: 16px;
+            --blue-bg: #bcd7f2;
 
+            --container-backgr: rgba(240, 246, 252, 0.7);
+            --bg-color: radial-gradient(circle at 30% 20%, #cfe3f7, var(--blue-bg) 60%);
+            --cards-bg: linear-gradient(145deg, rgba(255,255,255,.73), rgba(208,231,241,.7));
+            --schedule-bg: rgba(255, 255, 255, 0.8);
+
+            --main-bg: white;
+            --cards-bg-color: linear-gradient(145deg, rgba(255, 255, 255, .73), rgba(208, 231, 241, .7));
+            --main-text-color: #2c3e50;
+            --muted-text-color: #222;
+            --borders-color: 1px solid #dddddd;
+        }
 
 .open-btn {
     padding: 14px 24px;
@@ -21,14 +43,24 @@
 
 .modal-overlay.active {
     display: flex;
+    z-index: 3;
 }
 
 .modal {
     width: 700px;
-    background: white;
+    background: var(--main-bg);
     border-radius: 24px;
     padding: 28px;
     box-shadow: 0 20px 60px rgba(0,0,0,.15);
+    
+}
+
+.modal.dark-theme {
+    --main-bg: #1e222b;
+    color: white;
+    --cards-bg-color: #272d37;
+    --muted-text-color: #EDEDED;
+    --borders-color: 1px solid #4F4F4F;
 }
 
 .modal-header {
@@ -44,11 +76,18 @@
 
 .close-btn {
     border: none;
-    background: #f2f4f7;
+    background: var(--main-bg);
     width: 40px;
     height: 40px;
     border-radius: 10px;
     cursor: pointer;
+    color: var(--muted-text-color);
+}
+
+.close-btn.dark-theme {
+    
+    background: #272d37;
+    
 }
 
 form {
@@ -59,7 +98,8 @@ form {
 
 label {
     font-weight: 600;
-    color: #222;
+    color: var(--muted-text-color);
+
 }
 
 input,
@@ -67,10 +107,12 @@ textarea,
 select {
     width: 100%;
     padding: 14px;
-    border: 1px solid #d7dce5;
+    border: var(--borders-color);
     border-radius: 12px;
     font-size: 15px;
     outline: none;
+    background: var(--cards-bg-color);
+    color: var(--muted-text-color);
 }
 
 input:focus,
@@ -93,6 +135,7 @@ select:focus {
     display: flex;
     gap: 10px;
     margin-top: 10px;
+    
 }
 
 .priority-group label {
@@ -100,9 +143,11 @@ select:focus {
     align-items: center;
     gap: 5px;
     padding: 10px 12px;
-    border: 1px solid #ddd;
+    border: var(--borders-color);
     border-radius: 10px;
     cursor: pointer;
+    background: var(--cards-bg-color);
+    color: var(--muted-text-color);
 }
 
 .actions {
@@ -114,10 +159,11 @@ select:focus {
 
 .cancel-btn {
     border: none;
-    background: #f0f2f5;
+    background: var(--cards-bg-color);
     padding: 12px 24px;
     border-radius: 12px;
     cursor: pointer;
+    color: var(--muted-text-color);
 }
 
 .create-btn {

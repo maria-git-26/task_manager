@@ -125,16 +125,24 @@ document
 
     const appC = document.querySelector('.app-container');
     const bd = document.body;
+    const don = document.querySelector('.donut');
+    const mod = document.querySelector('.modal');
 
     toggleD.addEventListener('click', () => {
         appC.classList.toggle('dark-theme');
         bd.classList.toggle('dark-theme');
+        don.classList.toggle('dark-theme');
+        mod.classList.toggle('dark-theme');
     });
 
     toggleL.addEventListener('click', () => {
         appC.classList.remove('dark-theme');
         bd.classList.remove('dark-theme');
+        don.classList.remove('dark-theme');
+        mod.classList.remove('dark-theme');
     });
+
+    
 
     const checkboxes = document.querySelectorAll('.checkbox-item input');
   checkboxes.forEach(box => {
