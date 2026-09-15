@@ -32,6 +32,28 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
 
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/auth/**",
+                                "/login/login.html",
+                                "/register/register.html",
+                                "/login/**",
+                                "/main_menu/**",
+                                "/register/**"
+                        ).permitAll()
+                        .anyRequest()
+                        .authenticated()
+                )
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                )
+
+
+//                .authorizeHttpRequests(auth -> auth
+//                        .anyRequest().permitAll()
+//                )
+
 //                .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers(
 //                                "/auth/**",
@@ -40,18 +62,8 @@ public class SecurityConfig {
 //                                "/css/**",
 //                                "/js/**"
 //                        ).permitAll()
-//                        .anyRequest()
-//                        .authenticated()
-//                )
-//                .addFilterBefore(
-//                        jwtAuthenticationFilter,
-//                        UsernamePasswordAuthenticationFilter.class
-//                )
-
-
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
-                )
+//                        .anyRequest().authenticated()
+//               )
 
 
                 .build();

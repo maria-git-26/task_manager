@@ -1,3 +1,47 @@
+window.onload = () => {
+    loadTasks();
+};
+
+async function loadTasks() {
+
+    const token =
+        localStorage.getItem("token");
+
+    const response = await fetch(
+        "/tasks/getTasks",
+        {
+            headers: {
+                Authorization:
+                    "Bearer " + token
+            }
+        }
+    );
+
+    const tasks =
+        await response.json();
+
+    renderTasks(tasks);
+}
+
+function renderTasks(tasks) {
+    console.log((tasks));
+    const list =
+        document.getElementById("taskList");
+
+    list.innerHTML = "";
+
+    tasks.forEach(task => {
+
+        const li =
+            document.createElement("li");
+
+        li.textContent =
+            task.title;
+
+        list.appendChild(li);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Filter Buttons Toggle
     const filterBtns = document.querySelectorAll('.filter-btn');

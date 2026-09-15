@@ -21,13 +21,18 @@ async function login() {
         }
     );
 
+    if (!response.ok) {
+        alert("Неверный логин или пароль");
+        return;
+    }
+
     const data = await response.json();
 
     localStorage.setItem(
         "token",
         data.token
     );
-    console.log(
-        localStorage.getItem("token")
-    );
+
+    window.location.href =
+        "/main_menu/index.html";
 }
