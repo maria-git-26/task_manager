@@ -1,0 +1,182 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, sans-serif;
+}
+
+body{
+    background:#eef5fc;
+}
+
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:250px;
+    background:white;
+    padding:30px 20px;
+    box-shadow:0 0 20px rgba(0,0,0,.05);
+}
+
+.logo{
+    font-size:28px;
+    font-weight:700;
+    margin-bottom:40px;
+    color:#1e88ff;
+}
+
+.sidebar nav{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.sidebar a{
+    text-decoration:none;
+    color:#555;
+    padding:12px;
+    border-radius:12px;
+    transition:.3s;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+    background:#e3f2fd;
+    color:#1e88ff;
+}
+
+.content{
+    flex:1;
+    padding:40px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.header h1{
+    color:#1f2d3d;
+}
+
+.header p{
+    color:#7a8ca5;
+    margin-top:5px;
+}
+
+.create-btn{
+    border:none;
+    background:#1e88ff;
+    color:white;
+    padding:14px 22px;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+.toolbar{
+    margin-bottom:25px;
+}
+
+.toolbar input{
+    width:100%;
+    padding:14px;
+    border:1px solid #dce5ef;
+    border-radius:12px;
+}
+
+.stats{
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.card{
+    padding:12px 18px;
+    border-radius:15px;
+    font-weight:600;
+    display:flex;
+    gap:10px;
+}
+
+.blue{
+    background:#dff1ff;
+    color:#1e88ff;
+}
+
+.gray{
+    background:#f0f2f5;
+}
+
+.purple{
+    background:#efe7ff;
+    color:#7c4dff;
+}
+
+.green{
+    background:#e5fff0;
+    color:#22c55e;
+}
+
+.red{
+    background:#ffe7e7;
+    color:#ef4444;
+}
+
+.table-wrapper{
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    text-align:left;
+    padding:18px;
+    background:#f8fbff;
+    color:#6b7b90;
+}
+
+td{
+    padding:18px;
+    border-top:1px solid #edf2f7;
+}
+
+.badge{
+    padding:6px 12px;
+    border-radius:30px;
+    font-size:13px;
+}
+
+.todo{
+    background:#eef2f7;
+}
+
+.work{
+    background:#e9e2ff;
+    color:#6f42ff;
+}
+
+.high{
+    background:#ffe3e3;
+    color:#ff4d4f;
+}
+
+.medium{
+    background:#fff2d8;
+    color:#ff9800;
+}
+
+.low{
+    background:#dcfce7;
+    color:#16a34a;
+}

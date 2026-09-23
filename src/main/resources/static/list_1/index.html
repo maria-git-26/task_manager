@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynQ - Мои задачи</title>
+    <!-- Подключаем шрифт Inter и иконки Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-page: #e8f1f8;
+            --bg-card: #ffffff;
+            --bg-sidebar: #f7fafc;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+            --primary-blue: #38bdf8;
+            --primary-blue-hover: #0284c7;
+            
+            /* Цвета статусов */
+            --status-todo-bg: #edf2f7;
+            --status-todo-text: #4a5568;
+            --status-inprog-bg: #e0f2fe;
+            --status-inprog-text: #0284c7;
+            --status-done-bg: #dcfce7;
+            --status-done-text: #16a34a;
+            --status-canceled-bg: #fee2e2;
+            --status-canceled-text: #dc2626;
+
+            /* Цвета приоритетов */
+            --prio-high-bg: #ffe4e6;
+            --prio-high-text: #e11d48;
+            --prio-med-bg: #fef3c7;
+            --prio-med-text: #d97706;
+            --prio-low-bg: #dcfce7;
+            --prio-low-text: #16a34a;
+
+            /* Цвета категорий */
+            --cat-backend-bg: #f3e8ff;
+            --cat-backend-text: #7e22ce;
+            --cat-frontend-bg: #e0f2fe;
+            --cat-frontend-text: #0284c7;
+            --cat-devops-bg: #ccfbf1;
+            --cat-devops-text: #0f766e;
+            --cat-testing-bg: #fce7f3;
+            --cat-testing-text: #be185d;
+            --cat-bugfix-bg: #ffedd5;
+            --cat-bugfix-text: #c2410c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Главный контейнер приложения */
+        .app-container {
+            width: 100%;
+            max-width: 1440px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 900px;
+        }
+
+        /* Верхняя панель (Header) */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 22px;
+            color: #1e293b;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-toggle {
+            background: #edf2f7;
+            padding: 4px;
+            border-radius: 20px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .theme-btn {
+            border: none;
+            background: transparent;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+ .theme-btn.active {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: #cbd5e1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Макет с сайдбаром и контентом */
+        .main-layout {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Левое меню */
+        aside {
+            width: 240px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active a, .nav-item a:hover {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: auto;
+        }
+
+        /* Область основного контента */
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            background: #fafbfc;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-x: auto;
+        }
+
+        /* Заголовок страницы и действия */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .page-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .page-title p {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            width: 280px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px 10px 36px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 13px;
+            outline: none;
+            background: #fff;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .btn-filter {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+.btn-primary:hover {
+            background: var(--primary-blue-hover);
+        }
+
+        /* Фильтры в виде чипсов над таблицей */
+        .status-chips {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .chip.active {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .chip-badge {
+            background: rgba(0,0,0,0.06);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 11px;
+        }
+
+        .chip.active .chip-badge {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Таблица задач */
+        .table-container {
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 14px 16px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Стили чекбоксов */
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            accent-color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        /* Колонка названия задачи */
+        .task-title-cell {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .task-title-cell::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 15%;
+            bottom: 15%;
+            width: 3px;
+            border-radius: 2px;
+        }
+
+        .task-title-cell.border-blue::before { background-color: var(--primary-blue); }
+        .task-title-cell.border-green::before { background-color: #16a34a; }
+        .task-title-cell.border-red::before { background-color: #dc2626; }
+
+        .task-name {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .task-desc {
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        /* Теги (Badges) */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Статусы */
+        .status-todo { background: var(--status-todo-bg); color: var(--status-todo-text); }
+        .status-inprog { background: var(--status-inprog-bg); color: var(--status-inprog-text); }
+        .status-done { background: var(--status-done-bg); color: var(--status-done-text); }
+        .status-canceled { background: var(--status-canceled-bg); color: var(--status-canceled-text); }
+
+        /* Приоритеты */
+        .prio-high { background: var(--prio-high-bg); color: var(--prio-high-text); }
+        .prio-med { background: var(--prio-med-bg); color: var(--prio-med-text); }
+        .prio-low { background: var(--prio-low-bg); color: var(--prio-low-text); }
+ /* Категории */
+        .cat-backend { background: var(--cat-backend-bg); color: var(--cat-backend-text); }
+        .cat-frontend { background: var(--cat-frontend-bg); color: var(--cat-frontend-text); }
+        .cat-devops { background: var(--cat-devops-bg); color: var(--cat-devops-text); }
+        .cat-testing { background: var(--cat-testing-bg); color: var(--cat-testing-text); }
+        .cat-bugfix { background: var(--cat-bugfix-bg); color: var(--cat-bugfix-text); }
+
+        .date-cell {
+            color: var(--text-muted);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .action-btn:hover {
+            background: #f1f5f9;
+        }
+
+        /* Футер таблицы и пагинация */
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5px 0 5px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .pagination {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .page-btn {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: white;
+            color: var(--text-main);
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        /* Правая панель (Фильтры) */
+        .right-sidebar {
+            width: 240px;
+            padding: 0 0 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .filter-group-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .filter-section {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .filter-option label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .btn-reset-filters {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Футер страницы */
+        footer {
+            padding: 15px 30px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            background: white;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 15px;
+        }
+.footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Шапка -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-shapes"></i></div>
+                <span>SynQ</span>
+            </div>
+            <div class="header-controls">
+                <div class="theme-toggle">
+                    <button class="theme-btn">Dark</button>
+                    <button class="theme-btn active">Light</button>
+                </div>
+                <div class="user-avatar">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Сайдбар -->
+            <aside>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#"><i class="fa-solid fa-house"></i> Главная</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="#"><i class="fa-regular fa-calendar-check"></i> Задачи</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"><i class="fa-solid fa-border-all"></i> Доска</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"><i class="fa-regular fa-calendar"></i> Календарь</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"><i class="fa-solid fa-gear"></i> Настройки</a>
+                    </li>
+                </ul>
+                <button class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </aside>
+
+            <!-- Контент -->
+            <main class="content-area">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h1>Мои задачи</h1>
+                        <p>Управляйте своими задачами, следите за дедлайнами и достигайте целей.</p>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Поиск задач...">
+                        </div>
+                        <button class="btn-filter"><i class="fa-solid fa-sliders"></i> Фильтры</button>
+                        <button class="btn-primary"><i class="fa-solid fa-plus"></i> Создать задачу</button>
+                    </div>
+                </div>
+
+                <!-- Быстрые чипсы статусов -->
+                <div class="status-chips">
+                    <button class="chip active"><i class="fa-solid fa-bolt"></i> Все <span class="chip-badge">24</span></button>
+                    <button class="chip"><i class="fa-regular fa-circle"></i> TODO <span class="chip-badge">8</span></button>
+                    <button class="chip"><i class="fa-regular fa-clock"></i> В работе <span class="chip-badge">5</span></button>
+                    <button class="chip"><i class="fa-regular fa-circle-check"></i> Выполнено <span class="chip-badge">9</span></button>
+                    <button class="chip"><i class="fa-regular fa-circle-xmark"></i> Отменено <span class="chip-badge">2</span></button>
+                </div>
+
+                <!-- Основной блок с таблицей и фильтрами -->
+                <div style="display: flex;">
+                    <div style="flex: 1;">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+[16.09.2026 13:22] Maria Mashkova: <th style="width: 30px;"><input type="checkbox"></th>
+                                        <th>Название</th>
+                                        <th>Статус</th>
+                                        <th>Приоритет</th>
+                                        <th>Категория</th>
+                                        <th>Дедлайн</th>
+                                        <th>Создано</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Задача 1 -->
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td class="task-title-cell border-blue">
+                                            <div class="task-name">Изучить Spring Security</div>
+                                            <div class="task-desc">Пройти базовый курс и реализовать JWT</div>
+                                        </td>
+                                        <td><span class="badge status-inprog"><i class="fa-solid fa-spinner"></i> В работе</span></td>
+                                        <td><span class="badge prio-high"><i class="fa-solid fa-chevron-up"></i> Высокий</span></td>
+                                        <td><span class="badge cat-backend"><i class="fa-solid fa-circle" style="font-size:6px;"></i> Backend</span></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-calendar"></i> 12.09.2026</div></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-clock"></i> 05.09.2026</div></td>
+                                        <td><button class="action-btn"><i class="fa-solid fa-ellipsis"></i></button></td>
+                                    </tr>
+
+                                    <!-- Задача 2 -->
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td class="task-title-cell">
+                                            <div class="task-name">Настроить Docker</div>
+                                            <div class="task-desc">Создать docker-compose.yml</div>
+                                        </td>
+                                        <td><span class="badge status-todo">! TODO</span></td>
+                                        <td><span class="badge prio-med"><i class="fa-solid fa-arrow-up"></i> Средний</span></td>
+                                        <td><span class="badge cat-devops"><i class="fa-solid fa-circle" style="font-size:6px;"></i> DevOps</span></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-calendar"></i> 15.09.2026</div></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-clock"></i> 07.09.2026</div></td>
+                                        <td><button class="action-btn"><i class="fa-solid fa-ellipsis"></i></button></td>
+                                    </tr>
+
+                                    <!-- Задача 3 -->
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td class="task-title-cell border-blue">
+                                            <div class="task-name">Разработать UI для календаря</div>
+                                            <div class="task-desc">Визуализация задач по датам</div>
+                                        </td>
+                                        <td><span class="badge status-todo">! TODO</span></td>
+[16.09.2026 13:22] Maria Mashkova: <td><span class="badge prio-low"><i class="fa-solid fa-arrow-down"></i> Низкий</span></td>
+                                        <td><span class="badge cat-frontend"><i class="fa-solid fa-circle" style="font-size:6px;"></i> Frontend</span></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-calendar"></i> 18.09.2026</div></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-clock"></i> 08.09.2026</div></td>
+                                        <td><button class="action-btn"><i class="fa-solid fa-ellipsis"></i></button></td>
+                                    </tr>
+
+                                    <!-- Задача 4 -->
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td class="task-title-cell border-blue">
+                                            <div class="task-name">Написать unit тесты</div>
+                                            <div class="task-desc">Покрыть сервисы и репозитории</div>
+                                        </td>
+                                        <td><span class="badge status-inprog"><i class="fa-solid fa-spinner"></i> В работе</span></td>
+                                        <td><span class="badge prio-med"><i class="fa-solid fa-arrow-up"></i> Средний</span></td>
+                                        <td><span class="badge cat-testing"><i class="fa-solid fa-circle" style="font-size:6px;"></i> Testing</span></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-calendar"></i> 14.09.2026</div></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-clock"></i> 06.09.2026</div></td>
+                                        <td><button class="action-btn"><i class="fa-solid fa-ellipsis"></i></button></td>
+                                    </tr>
+
+                                    <!-- Задача 5 -->
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td class="task-title-cell">
+                                            <div class="task-name">Создать страницу профиля</div>
+                                            <div class="task-desc">Редактирование данных пользователя</div>
+                                        </td>
+                                        <td><span class="badge status-todo">! TODO</span></td>
+                                        <td><span class="badge prio-low"><i class="fa-solid fa-arrow-down"></i> Низкий</span></td>
+                                        <td><span class="badge cat-frontend"><i class="fa-solid fa-circle" style="font-size:6px;"></i> Frontend</span></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-calendar"></i> 20.09.2026</div></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-clock"></i> 09.09.2026</div></td>
+                                        <td><button class="action-btn"><i class="fa-solid fa-ellipsis"></i></button></td>
+                                    </tr>
+
+                                    <!-- Задача 6 -->
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td class="task-title-cell border-green">
+                                            <div class="task-name">Добавить валидацию форм</div>
+                                            <div class="task-desc">Проверка на стороне клиента и сервера</div>
+                                        </td>
+[16.09.2026 13:22] Maria Mashkova: <td><span class="badge status-done"><i class="fa-solid fa-check"></i> Выполнено</span></td>
+                                        <td><span class="badge prio-med"><i class="fa-solid fa-arrow-up"></i> Средний</span></td>
+                                        <td><span class="badge cat-backend"><i class="fa-solid fa-circle" style="font-size:6px;"></i> Backend</span></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-calendar"></i> 10.09.2026</div></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-clock"></i> 02.09.2026</div></td>
+                                        <td><button class="action-btn"><i class="fa-solid fa-ellipsis"></i></button></td>
+                                    </tr>
+
+                                    <!-- Задача 7 -->
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td class="task-title-cell border-green">
+                                            <div class="task-name">Реализовать поиск задач</div>
+                                            <div class="task-desc">По названию и описанию</div>
+                                        </td>
+                                        <td><span class="badge status-done"><i class="fa-solid fa-check"></i> Выполнено</span></td>
+                                        <td><span class="badge prio-low"><i class="fa-solid fa-arrow-down"></i> Низкий</span></td>
+                                        <td><span class="badge cat-frontend"><i class="fa-solid fa-circle" style="font-size:6px;"></i> Frontend</span></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-calendar"></i> 08.09.2026</div></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-clock"></i> 01.09.2026</div></td>
+                                        <td><button class="action-btn"><i class="fa-solid fa-ellipsis"></i></button></td>
+                                    </tr>
+
+                                    <!-- Задача 8 -->
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td class="task-title-cell border-red">
+                                            <div class="task-name">Исправить баги</div>
+                                            <div class="task-desc">Проверить ошибки валидации</div>
+                                        </td>
+                                        <td><span class="badge status-canceled"><i class="fa-solid fa-xmark"></i> Отменено</span></td>
+                                        <td><span class="badge prio-high"><i class="fa-solid fa-chevron-up"></i> Высокий</span></td>
+                                        <td><span class="badge cat-bugfix"><i class="fa-solid fa-circle" style="font-size:6px;"></i> Bugfix</span></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-calendar"></i> 05.09.2026</div></td>
+                                        <td><div class="date-cell"><i class="fa-regular fa-clock"></i> 28.08.2026</div></td>
+                                        <td><button class="action-btn"><i class="fa-solid fa-ellipsis"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Пагинация -->
+                        <div class="table-footer">
+                            <span>Показано 1–8 из 24 задач</span>
+                            <div class="pagination">
+[16.09.2026 13:22] Maria Mashkova: <button class="page-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                                <button class="page-btn active">1</button>
+                                <button class="page-btn">2</button>
+                                <button class="page-btn">3</button>
+                                <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Панель фильтров справа -->
+                    <div class="right-sidebar">
+                        <div class="filter-group-title">Фильтры</div>
+                        
+                        <div class="filter-section">
+                            <div class="filter-section-title">Статус</div>
+                            <div class="filter-option"><label><input type="radio" name="status" checked> Все</label> <span>24</span></div>
+                            <div class="filter-option"><label><input type="radio" name="status"> TODO</label> <span>8</span></div>
+                            <div class="filter-option"><label><input type="radio" name="status"> В работе</label> <span>5</span></div>
+                            <div class="filter-option"><label><input type="radio" name="status"> Выполнено</label> <span>9</span></div>
+                            <div class="filter-option"><label><input type="radio" name="status"> Отменено</label> <span>2</span></div>
+                        </div>
+
+                        <div class="filter-section">
+                            <div class="filter-section-title">Приоритет</div>
+                            <div class="filter-option"><label><input type="checkbox"> <span class="dot" style="background: #e11d48;"></span> Высокий</label></div>
+                            <div class="filter-option"><label><input type="checkbox"> <span class="dot" style="background: #d97706;"></span> Средний</label></div>
+                            <div class="filter-option"><label><input type="checkbox"> <span class="dot" style="background: #16a34a;"></span> Низкий</label></div>
+                        </div>
+
+                        <div class="filter-section">
+                            <div class="filter-section-title">Категория</div>
+                            <div class="filter-option"><label><input type="checkbox"> <span class="dot" style="background: #7e22ce;"></span> Backend</label></div>
+                            <div class="filter-option"><label><input type="checkbox"> <span class="dot" style="background: #0284c7;"></span> Frontend</label></div>
+                            <div class="filter-option"><label><input type="checkbox"> <span class="dot" style="background: #be185d;"></span> Testing</label></div>
+                            <div class="filter-option"><label><input type="checkbox"> <span class="dot" style="background: #0f766e;"></span> DevOps</label></div>
+                            <div class="filter-option"><label><input type="checkbox"> <span class="dot" style="background: #c2410c;"></span> Bugfix</label></div>
+                        </div>
+
+                        <button class="btn-reset-filters">
+                            <i class="fa-solid fa-rotate-left"></i> Сбросить фильтры
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Подвал -->
+        <footer>
+            <span>© 2026 SynQ</span>
+            <div class="footer-links">
+                <a href="#">Поддержка</a>
+                <a href="#">Документация</a>
+                <a href="#">Политика конфиденциальности</a>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>

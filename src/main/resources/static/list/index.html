@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynQ - Мои задачи</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">SynQ</div>
+
+        <nav>
+            <a href="#">🏠 Главная</a>
+            <a href="#" class="active">📅 Задачи</a>
+            <a href="#">📋 Доска</a>
+            <a href="#">🗓 Календарь</a>
+            <a href="#">⚙️ Настройки</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+
+        <div class="header">
+            <div>
+                <h1>Мои задачи</h1>
+                <p>Управляйте своими задачами и следите за дедлайнами</p>
+            </div>
+
+            <button class="create-btn">
+                + Создать задачу
+            </button>
+        </div>
+
+        <div class="toolbar">
+            <input
+                type="text"
+                id="search"
+                placeholder="Поиск задач..."
+            >
+        </div>
+
+        <div class="stats">
+            <div class="card blue">Все <span>24</span></div>
+            <div class="card gray">TODO <span>8</span></div>
+            <div class="card purple">В работе <span>5</span></div>
+            <div class="card green">Выполнено <span>9</span></div>
+            <div class="card red">Отменено <span>2</span></div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Статус</th>
+                    <th>Приоритет</th>
+                    <th>Категория</th>
+                    <th>Дедлайн</th>
+                </tr>
+                </thead>
+
+                <tbody id="taskTable">
+                    <tr>
+                        <td>Изучить Spring Security</td>
+                        <td><span class="badge work">В работе</span></td>
+                        <td><span class="badge high">Высокий</span></td>
+                        <td>Backend</td>
+                        <td>12.09.2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>Настроить Docker</td>
+                        <td><span class="badge todo">TODO</span></td>
+                        <td><span class="badge medium">Средний</span></td>
+                        <td>DevOps</td>
+                        <td>15.09.2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>Разработать UI календаря</td>
+                        <td><span class="badge todo">TODO</span></td>
+                        <td><span class="badge low">Низкий</span></td>
+                        <td>Frontend</td>
+                        <td>18.09.2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>Написать unit тесты</td>
+                        <td><span class="badge work">В работе</span></td>
+                        <td><span class="badge medium">Средний</span></td>
+                        <td>Testing</td>
+                        <td>14.09.2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>Создать страницу профиля</td>
+                        <td><span class="badge todo">TODO</span></td>
+                        <td><span class="badge low">Низкий</span></td>
+                        <td>Frontend</td>
+                        <td>20.09.2026</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
