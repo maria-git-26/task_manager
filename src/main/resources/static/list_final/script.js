@@ -59,4 +59,55 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+    window.onload = () => {
+        loadTasks();
+    };
+
+    async function loadTasks() {
+
+        const token =
+            localStorage.getItem("token");
+
+        const response = await fetch(
+            "/tasks/getTasks",
+            {
+                headers: {
+                    Authorization:
+                        "Bearer " + token
+                }
+            }
+        );
+
+        const tasks =
+            await response.json();
+
+        renderTasks(tasks);
+    }
+
+    function renderTasks(tasks) {
+        console.log((tasks));
+        const table = document.getElementById('tableList');
+
+
+        tasks.forEach(task => {
+
+
+            const row = table.insertRow();
+            row.insertCell().innerHTML = '<input type="checkbox">';
+            row.insertCell().textContent = task.title;
+            row.insertCell().textContent = task.description;
+            row.insertCell().textContent = task.priority;
+            row.insertCell().textContent = task.status;
+
+
+        });
+    }
+
+
 });
+
+async function toMainMenu() {
+    window.location.href =
+        "/main_menu/index.html";
+}
