@@ -39,6 +39,7 @@ public class SecurityConfig {
                                 "/register/register.html",
                                 "/login/**",
                                 "/main_menu/**",
+                                "/list_final/**",
                                 "/register/**"
                         ).permitAll()
                         .anyRequest()

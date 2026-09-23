@@ -142,7 +142,7 @@ modal.addEventListener("click", (e) => {
 
 document
     .getElementById("taskForm")
-    .addEventListener("submit", (e) => {
+    .addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const task = {
@@ -155,6 +155,26 @@ document
                 'input[name="priority"]:checked'
             ).value
         };
+        const token =
+            localStorage.getItem("token");
+        const response = await fetch(
+
+            "http://localhost:8080/tasks",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + token
+                },
+                body: JSON.stringify({
+                    title: task.title,
+                    description: task.description,
+                    priority: task.priority,
+                    status: "in motion"
+                })
+            }
+        );
 
         console.log(task);
 
@@ -201,4 +221,14 @@ document
       }
     });
   });
+
+
 });
+
+
+async function tasksList() {
+
+
+    window.location.href =
+        "/list_final/kanban.html";
+}
