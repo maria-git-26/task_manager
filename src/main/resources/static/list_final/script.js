@@ -104,10 +104,76 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
 });
 
 async function toMainMenu() {
     window.location.href =
         "/main_menu/index.html";
 }
+
+const modal = document.getElementById("modal");
+const openBtn = document.getElementById("openModal");
+const closeBtn = document.getElementById("closeModal");
+const cancelBtn = document.getElementById("cancelBtn");
+
+openBtn.addEventListener("click", () => {
+    modal.classList.add("active");
+});
+
+closeBtn.addEventListener("click", () => {
+    modal.classList.remove("active");
+});
+
+cancelBtn.addEventListener("click", () => {
+    modal.classList.remove("active");
+});
+
+modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+        modal.classList.remove("active");
+    }
+});
+
+document
+    .getElementById("taskForm")
+    .addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const task = {
+            title: document.getElementById("title").value,
+            description: document.getElementById("description").value,
+            project: document.getElementById("project").value,
+            assignee: document.getElementById("assignee").value,
+            deadline: document.getElementById("deadline").value,
+            priority: document.querySelector(
+                'input[name="priority"]:checked'
+            ).value
+        };
+        const token =
+            localStorage.getItem("token");
+        const response = await fetch(
+
+            "http://localhost:8080/tasks",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + token
+                },
+                body: JSON.stringify({
+                    title: task.title,
+                    description: task.description,
+                    priority: task.priority,
+                    status: "in motion"
+                })
+            }
+        );
+
+        console.log(task);
+
+        alert("Задача создана!");
+
+        modal.classList.remove("active");
+        e.target.reset();
+    });

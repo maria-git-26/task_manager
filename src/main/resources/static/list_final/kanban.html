@@ -936,8 +936,89 @@
                         </button>
                     </div>
                 </div>
-        
 
+        <div class="modal-overlay" id="modal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2>Создать новую задачу</h2>
+                    <button class="close-btn" id="closeModal">✕</button>
+                </div>
+                <form id="taskForm">
+                    <label>Название задачи</label>
+                    <input
+                            type="text"
+                            id="title"
+                            placeholder="Разработать UI авторизации"
+                            required
+                    >
+
+                    <label>Описание</label>
+                    <textarea
+                            id="description"
+                            rows="4"
+                            placeholder="Описание задачи..."
+                    ></textarea>
+
+                    <div class="row">
+                        <div class="field">
+                            <label>Проект</label>
+                            <select id="project">
+                                <option>Delta Design</option>
+                                <option>CRM System</option>
+                                <option>Mobile App</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label>Исполнитель</label>
+                            <select id="assignee">
+                                <option>Алексей</option>
+                                <option>Полина</option>
+                                <option>Сергей</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="field">
+                            <label>Дедлайн</label>
+                            <input type="date" id="deadline">
+                        </div>
+
+                        <div class="field">
+                            <label>Приоритет</label>
+
+                            <div class="priority-group">
+                                <label>
+                                    <input type="radio" name="priority" value="Высокий" checked>
+                                    Высокий
+                                </label>
+
+                                <label>
+                                    <input type="radio" name="priority" value="Средний">
+                                    Средний
+                                </label>
+
+                                <label>
+                                    <input type="radio" name="priority" value="Низкий">
+                                    Низкий
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="button" class="cancel-btn" id="cancelBtn">
+                            Отмена
+                        </button>
+
+                        <button type="submit" class="create-btn">
+                            Создать задачу
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!-- Footer Bar -->
         <footer class="footer">
