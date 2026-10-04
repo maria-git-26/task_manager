@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynQ Kanban Board</title>
+    <!-- Шрифты и иконки -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #e3edf7 0%, #d8e5f3 100%);
+            --card-bg: rgba(255, 255, 255, 0.65);
+            --card-border: rgba(255, 255, 255, 0.8);
+            --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            --accent-blue: #00a8ff;
+            --accent-glow: 0 0 15px rgba(0, 168, 255, 0.5);
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --radius: 16px;
+            --blue-bg: #bcd7f2;
+            --bg-sidebar: #f7fafc;
+
+            --container-backgr: rgba(240, 246, 252, 0.7);
+            --bg-color: radial-gradient(circle at 30% 20%, #cfe3f7, var(--blue-bg) 60%);
+            --cards-bg: linear-gradient(145deg, rgba(255,255,255,.73), rgba(208,231,241,.7));
+            --schedule-bg: rgba(255, 255, 255, 0.8);
+            --buttons-bg: #fff;
+
+            --bg-app: #eef2f6;
+            --bg-sidebar: #f8fafc;
+            --bg-column: #f4f5f7;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #38bdf8;
+            --primary-hover: #0ea5e9;
+            --border-color: #e2e8f0;
+            --priority-high: #ef4444;
+            --tag-feature-bg: #e0f2fe;
+            --tag-feature-text: #0369a1;
+            --tag-bug-bg: #fee2e2;
+            --tag-bug-text: #b91c1c;
+            --tag-docs-bg: #dcfce7;
+            --tag-docs-text: #15803d;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: radial-gradient(circle at 30% 20%, #121212, #2c3e50  60%);
+            --container-backgr: #1e222b;
+            --cards-bg: rgba(255, 255, 255, 0.04);
+            --text-main: #fff;
+            --text-muted: #EDEDED;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* Основной контейнер */
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        /* Сайдбар */
+        .sidebar {
+            width: 70px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 0;
+            gap: 20px;
+        }
+
+        .sidebar-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sidebar-icon:hover {
+            background-color: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .sidebar-icon.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #38bdf8, #3b82f6);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        /* Основной контент */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 40px;
+            overflow: hidden;
+        }
+
+        /* Шапка */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .theme-toggle span {
+            padding: 4px 12px;
+            border-radius: 16px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .theme-toggle span.active {
+            background: white;
+            color: var(--text-main);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            background-image: url('https://i.pravatar.cc/100?img=33');
+            background-size: cover;
+        }
+
+        /* Заголовок доски */
+        .board-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 24px;
+        }
+
+        .board-title h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .board-title p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .btn-add-task {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-add-task:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Канбан доска */
+        .kanban-board {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .column {
+            background-color: var(--bg-column);
+            border-radius: 16px;
+            width: 300px;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .column.drag-over {
+            background-color: #e2e8f0;
+        }
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .task-count {
+            background-color: #e2e8f0;
+            color: var(--text-muted);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .column-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            overflow-y: auto;
+            min-height: 150px; /* Чтобы можно было бросать в пустые колонки */
+        }
+
+        /* Карточка задачи */
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.04);
+            cursor: grab;
+            transition: box-shadow 0.2s, transform 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .card:active {
+            cursor: grabbing;
+        }
+
+        .card.dragging {
+            opacity: 0.5;
+            transform: scale(0.98);
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card-menu {
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .card-tags {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .priority {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .priority-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--priority-high);
+        }
+
+        .tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .tag.feature { background-color: var(--tag-feature-bg); color: var(--tag-feature-text); }
+        .tag.bug { background-color: var(--tag-bug-bg); color: var(--tag-bug-text); }
+        .tag.docs { background-color: var(--tag-docs-bg); color: var(--tag-docs-text); }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .assignee {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            background-size: cover;
+        }
+
+        /* Чеклист в карточке */
+        .checklist {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            accent-color: var(--primary);
+        }
+
+        /* Стилизация скроллбара */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 30% 20%, #cfe3f7, var(--blue-bg) 60%);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        body.dark-theme{
+            background: radial-gradient(circle at 30% 20%, #121212, #2c3e50  60%);
+            --container-backgr: #1e222b;
+            --cards-bg: rgba(255, 255, 255, 0.04);
+            --text-main: #fff;
+            --text-muted: #828282;
+            --schedule-bg: #56565C;
+            --bg-sidebar:#1e222b;
+            --buttons-bg: #272d37;
+        }
+
+
+
+        /* Main Container */
+        .app-container {
+            width: 100%;
+            max-width: 1200px;
+            min-width: 1300px;
+            background: white;
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+            display: flex;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .app-container.dark-theme {
+            background: #1e222b;
+            color: #fff;
+            border: 1px solid #4F4F4F;
+        }
+
+        .app-container.dark-theme .card{
+            background: #272d37;
+            color: #fff;
+            border: 1px solid #4F4F4F;
+            --text-muted: #EDEDED;
+        }
+
+        /* Sidebar */
+
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .top-controls {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 286px;
+        }
+
+
+
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-switch {
+            display: flex;
+            align-items: center;
+            height: 34px;
+            padding: 3px;
+            border: 1px solid rgba(112, 148, 166, .33);
+            border-radius: 18px;
+            font-size: 11px;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .theme-switch span {
+            padding: 3px 12px;
+        }
+
+        .theme-switch .selected {
+            color: white;
+            border-radius: 15px;
+            background: linear-gradient(100deg, #267caf, #49d5de);
+            box-shadow: 0 4px 10px rgba(37, 156, 201, .32);
+        }
+
+        .notification,
+        .avatar {
+            width: 32px;
+            height: 32px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+        }
+
+        .notification {
+            position: relative;
+            background: rgba(201, 222, 233, .8);
+            font-size: 16px;
+        }
+
+        .notification::after {
+            content: "";
+            width: 6px;
+            height: 6px;
+            position: absolute;
+            top: 4px;
+            right: 5px;
+            border-radius: 50%;
+            background: #dc6e79;
+        }
+
+        .avatar {
+            overflow: hidden;
+            color: #765b47;
+            font-size: 17px;
+            background: linear-gradient(145deg, #e8c4a1, #ad8161);
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,.5);
+        }
+
+        /* Greeting Section */
+        .welcome {
+            min-height: 62px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .welcome h1 {
+            margin: 0 0 4px;
+            font-size: 27px;
+            font-weight: 400;
+            letter-spacing: -.8px;
+        }
+
+        .welcome p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .summary {
+            display: flex;
+            align-items: center;
+            gap: 27px;
+            padding-right: 1px;
+        }
+
+        .summary-item {
+            padding-left: 27px;
+            border-left: 1px solid var(--line);
+            white-space: nowrap;
+        }
+
+        .summary-label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 11px;
+            color: #344b57;
+        }
+
+        .summary-value {
+            font-size: 24px;
+            letter-spacing: -.5px;
+        }
+
+        .summary-value small {
+            font-size: 13px;
+            color: #566e7b;
+        }
+
+        .sport-button {
+            padding: 8px 8px;
+            border-radius: 21px;
+            color: white;
+            font-size: 12px;
+            background: linear-gradient(100deg, #187fbc, #5bd9e9);
+            box-shadow: 0 8px 16px rgba(23, 159, 206, .35);
+            border: none;
+            cursor: pointer;
+
+
+        }
+
+        .sport-button strong {
+            margin-right: 9px;
+            font-size: 19px;
+            font-weight: 300;
+            vertical-align: -2px;
+        }
+
+        /* Dashboard Grid Layout */
+        .card {
+            border: 1px solid rgba(136, 174, 191, .25);
+            border-radius: 14px;
+            background: var(--cards-bg);
+            box-shadow: var(--shadow);
+        }
+
+        .card h4 {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .card h4 {
+
+            justify-content: center;
+        }
+
+        .calendar-card {
+            height: 210px;
+            padding: 15px 14px 11px;
+            background:
+                    radial-gradient(circle at 50% 0%, rgba(255,255,255,.74), transparent 52%),
+                    linear-gradient(145deg, rgba(232,247,252,.92), rgba(180,217,233,.75));
+        }
+
+        .card-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .month-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+
+
+        .weekdays,
+        .month-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+        }
+
+        .weekdays {
+            margin-bottom: 6px;
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+
+        .month-grid {
+            row-gap: 4px;
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        .day {
+            width: 25px;
+            height: 20px;
+            display: grid;
+            place-items: center;
+            justify-self: center;
+            border-radius: 11px;
+        }
+
+        .day.selected {
+            color: #234a61;
+            background: #a6cde1;
+        }
+
+        .day.range {
+            width: 100%;
+            border-radius: 0;
+            background: rgba(219, 237, 244, .75);
+        }
+
+        .day.range-start {
+            border-radius: 11px 0 0 11px;
+        }
+
+        .day.range-end {
+            border-radius: 0 11px 11px 0;
+        }
+
+        .calendar-card {
+            height: 220px;
+            padding: 15px 14px 11px;
+            background:
+                    radial-gradient(circle at 50% 0%, rgba(255,255,255,.74), transparent 52%),
+                    linear-gradient(145deg, rgba(232,247,252,.92), rgba(180,217,233,.75));
+        }
+
+        .calendar-container{
+            height: 210px;
+        }
+
+
+
+        .card-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .list-card {
+            background: var(--navy);
+            color: var(--text-muted);
+            padding: 16px 0 0;
+        }
+
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            cursor: pointer;
+            padding-left: 10px;
+            color: var(--text-muted);
+        }
+
+        .checkbox-item input {
+            display: none;
+        }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+
+        }
+
+        .checkbox-item input:checked + .custom-checkbox {
+            background-color: #fff;
+            color: var(--dark-navy);
+            border-color: #fff;
+        }
+
+        .tasks-body {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .donut {
+            width: 98px;
+            height: 98px;
+            position: relative;
+            display: grid;
+            place-items: center;
+            flex: 0 0 98px;
+            border-radius: 50%;
+            background: conic-gradient(
+                    #377bb9 0 50%,
+                    #e2a05f 50% 70%,
+                    #55ad8d 70% 100%
+            );
+        }
+
+        .donut::after {
+            content: "";
+            width: 72px;
+            height: 72px;
+            position: absolute;
+            border-radius: 50%;
+            background: #edf7fa;
+            box-shadow: inset 0 1px 3px rgba(63, 105, 121, .15);
+        }
+
+        .donut.dark-theme::after {
+            background: #272d37;
+        }
+
+
+
+        .donut-content {
+            z-index: 2;
+            text-align: center;
+            font-size: 10px;
+            margin-bottom: 10px;
+        }
+
+        .donut-content strong {
+            display: block;
+            margin-bottom: 2px;
+            font-size: 19px;
+            font-weight: 400;
+            height: 30px;
+        }
+
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            font-size: 10px;
+        }
+
+        .legend-row {
+            display: grid;
+            grid-template-columns: 8px 1fr auto;
+            align-items: center;
+            gap: 5px;
+            min-width: 115px;
+        }
+
+        .legend-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #377bb9;
+        }
+
+        .legend-dot.orange {
+            background: #df9d5d;
+        }
+
+        .legend-dot.green {
+            background: #59a984;
+        }
+
+        .legend strong {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .legend em {
+            color: #738590;
+            font-style: normal;
+        }
+
+
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 24px;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+        }
+
+        /* Left Column Elements */
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .calendar-card {
+            background: linear-gradient(180deg, rgba(200, 225, 245, 0.6) 0%, rgba(220, 235, 250, 0.4) 100%);
+        }
+
+        /* Right Column Elements / Schedule */
+        .schedule-card {
+            min-height: 380px;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 50px repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .event-block {
+            background: var(--schedule-bg);
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 11px;
+            border-left: 3px solid var(--accent-blue);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            color: var(--text-muted);
+        }
+
+        .right-sidebar {
+            width: 240px;
+            padding: 0 0 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .filter-group-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .filter-section {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .filter-option label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .btn-reset-filters {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Bottom Section Grid */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* Footer */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            background: var(--bg-sidebar);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 16px;
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_1.css">
+    <link rel="stylesheet" href="style_2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+
+
+    <!-- Navigation Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-top">
+            <div class="logo-icon">
+                <i class="fa fa-globe"></i>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item" onclick="toMainMenu()"><i class="fa-solid fa-house"></i></a>
+            <a href="#" class="nav-item active"><i class="fa-regular fa-clipboard"></i></a>
+            <a href="#" class="nav-item"><i class="fa-brands fa-trello"></i></a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-chart-line"></i></a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-user-group"></i></a>
+            <div class="nav-divider"></div>
+            <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i></a>
+        </div>
+    </aside>
+
+    <!-- Main Section -->
+    <main class="main-content">
+        <!-- Top Control Bar -->
+        <header class="header">
+            <div class="header-left">
+                <span class="brand-title">SynQ</span>
+
+            </div>
+            <div class="user-controls">
+                <div class="theme-switch" id="theme_toggle">
+                    <span id="dark-theme-toggle">Dark</span>
+                    <span id="light-theme-toggle" class="selected">Light</span>
+                </div>
+                <a href="#" class="nav-item"><i class="fa-solid fa-solidLarge fa-user"></i></a>
+            </div>
+        </header>
+
+        <!-- Welcome Banner -->
+
+
+
+
+        <div class="page-header">
+            <div class="page-title">
+                <h1>Мои задачи</h1>
+                <p>Управляйте своими задачами, следите за дедлайнами и достигайте целей.</p>
+            </div>
+            <div class="header-actions">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Поиск задач...">
+                </div>
+                <button class="btn-filter"><i class="fa-solid fa-sliders"></i> Фильтры</button>
+                <div class="summary">
+                    <button class="sport-button"  id="openModal" class="open-btn">
+                        <strong>＋</strong> Add Task
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Быстрые чипсы статусов -->
+
+        <div class="kanban-board">
+
+            <!-- Колонка 1: К выполнению -->
+            <div class="column">
+                <div class="column-header">
+                    <span>К выполнению</span>
+                    <span class="task-count">8 tasks</span>
+                </div>
+                <div class="column-body" data-column="todo">
+                    <!-- Карточка 1 -->
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Разработать API для регистрации
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag feature">Feature</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=1');"></div>
+                        </div>
+                    </div>
+                    <!-- Карточка 2 -->
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Написать документацию для SWAGGER
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag docs">Docs</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=2');"></div>
+                        </div>
+                    </div>
+                    <!-- Карточка 3 (с чеклистом) -->
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Написать документацию регистрации
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="checklist">
+                            <label class="checklist-item"><input type="checkbox" checked> Создать complete</label>
+                            <label class="checklist-item"><input type="checkbox"> Создать checklist</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Колонка 2: В процессе -->
+            <div class="column">
+                <div class="column-header">
+                    <span>В процессе</span>
+                    <span class="task-count">5 tasks</span>
+                </div>
+                <div class="column-body" data-column="in-progress">
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Написать документа для регистрации
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag bug">Bug</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=3');"></div>
+                        </div>
+                    </div>
+                    <div class="card" style="border: 1px solid var(--primary);" draggable="true">
+                        <div class="card-title">
+                            Написать документацию для SWAGGER
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag feature">Feature</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=4');"></div>
+                        </div>
+                    </div>
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Разработать API для регистрации
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag bug">Bug</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=5');"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Колонка 3: На проверке -->
+            <div class="column">
+                <div class="column-header">
+                    <span>На проверке</span>
+                    <span class="task-count">3 tasks</span>
+                </div>
+                <div class="column-body" data-column="review">
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Разработать авторизации
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag feature">Feature</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=6');"></div>
+                        </div>
+                    </div>
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Разработать аутентификации
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag bug">Bug</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=7');"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Колонка 4: Готово -->
+            <div class="column">
+                <div class="column-header">
+                    <span>Готово</span>
+                    <span class="task-count">0 tasks</span>
+                </div>
+                <div class="column-body" data-column="done">
+                    <!-- Пустая колонка для перетаскивания -->
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-overlay" id="modal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2>Создать новую задачу</h2>
+                    <button class="close-btn" id="closeModal">✕</button>
+                </div>
+                <form id="taskForm">
+                    <label>Название задачи</label>
+                    <input
+                            type="text"
+                            id="title"
+                            placeholder="Разработать UI авторизации"
+                            required
+                    >
+
+                    <label>Описание</label>
+                    <textarea
+                            id="description"
+                            rows="4"
+                            placeholder="Описание задачи..."
+                    ></textarea>
+
+                    <div class="row">
+                        <div class="field">
+                            <label>Проект</label>
+                            <select id="project">
+                                <option>Delta Design</option>
+                                <option>CRM System</option>
+                                <option>Mobile App</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label>Исполнитель</label>
+                            <select id="assignee">
+                                <option>Алексей</option>
+                                <option>Полина</option>
+                                <option>Сергей</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="field">
+                            <label>Дедлайн</label>
+                            <input type="date" id="deadline">
+                        </div>
+
+                        <div class="field">
+                            <label>Приоритет</label>
+
+                            <div class="priority-group">
+                                <label>
+                                    <input type="radio" name="priority" value="Высокий" checked>
+                                    Высокий
+                                </label>
+
+                                <label>
+                                    <input type="radio" name="priority" value="Средний">
+                                    Средний
+                                </label>
+
+                                <label>
+                                    <input type="radio" name="priority" value="Низкий">
+                                    Низкий
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="button" class="cancel-btn" id="cancelBtn">
+                            Отмена
+                        </button>
+
+                        <button type="submit" class="create-btn">
+                            Создать задачу
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer Bar -->
+        <footer class="footer">
+            <span>© 2026 SynQ</span>
+            <div class="footer-links">
+                <span>Поддержка</span>
+                <span>Документация</span>
+                <span>Политика конфиденциальности</span>
+            </div>
+        </footer>
+    </main>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

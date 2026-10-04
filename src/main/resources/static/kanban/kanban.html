@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynQ Kanban Board</title>
+    <!-- Шрифты и иконки -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-app: #eef2f6;
+            --bg-sidebar: #f8fafc;
+            --bg-column: #f4f5f7;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #38bdf8;
+            --primary-hover: #0ea5e9;
+            --border-color: #e2e8f0;
+            --priority-high: #ef4444;
+            --tag-feature-bg: #e0f2fe;
+            --tag-feature-text: #0369a1;
+            --tag-bug-bg: #fee2e2;
+            --tag-bug-text: #b91c1c;
+            --tag-docs-bg: #dcfce7;
+            --tag-docs-text: #15803d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* Основной контейнер */
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        /* Сайдбар */
+        .sidebar {
+            width: 70px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 0;
+            gap: 20px;
+        }
+
+        .sidebar-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sidebar-icon:hover {
+            background-color: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .sidebar-icon.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #38bdf8, #3b82f6);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        /* Основной контент */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 40px;
+            overflow: hidden;
+        }
+
+        /* Шапка */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .theme-toggle span {
+            padding: 4px 12px;
+            border-radius: 16px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .theme-toggle span.active {
+            background: white;
+            color: var(--text-main);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            background-image: url('https://i.pravatar.cc/100?img=33');
+            background-size: cover;
+        }
+
+        /* Заголовок доски */
+        .board-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 24px;
+        }
+
+        .board-title h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .board-title p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .btn-add-task {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-add-task:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Канбан доска */
+        .kanban-board {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .column {
+            background-color: var(--bg-column);
+            border-radius: 16px;
+            width: 300px;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .column.drag-over {
+            background-color: #e2e8f0;
+        }
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .task-count {
+            background-color: #e2e8f0;
+            color: var(--text-muted);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .column-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            overflow-y: auto;
+            min-height: 150px; /* Чтобы можно было бросать в пустые колонки */
+        }
+
+        /* Карточка задачи */
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.04);
+            cursor: grab;
+            transition: box-shadow 0.2s, transform 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .card:active {
+            cursor: grabbing;
+        }
+
+        .card.dragging {
+            opacity: 0.5;
+            transform: scale(0.98);
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card-menu {
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .card-tags {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .priority {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .priority-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--priority-high);
+        }
+
+        .tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .tag.feature { background-color: var(--tag-feature-bg); color: var(--tag-feature-text); }
+        .tag.bug { background-color: var(--tag-bug-bg); color: var(--tag-bug-text); }
+        .tag.docs { background-color: var(--tag-docs-bg); color: var(--tag-docs-text); }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .assignee {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            background-size: cover;
+        }
+
+        /* Чеклист в карточке */
+        .checklist {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            accent-color: var(--primary);
+        }
+
+        /* Стилизация скроллбара */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Сайдбар -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">S</div>
+        <div class="sidebar-icon active"><i class="fas fa-home"></i></div>
+        <div class="sidebar-icon"><i class="fas fa-folder"></i></div>
+        <div class="sidebar-icon"><i class="fas fa-calendar-alt"></i></div>
+        <div class="sidebar-icon"><i class="fas fa-chart-line"></i></div>
+        <div class="sidebar-icon"><i class="fas fa-users"></i></div>
+        <div class="sidebar-icon sidebar-bottom"><i class="fas fa-cog"></i></div>
+    </aside>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        <!-- Шапка -->
+        <header class="header">
+            <h1>SynQ</h1>
+            <div class="header-actions">
+                <div class="theme-toggle">
+                    <span>Dark</span>
+                    <span class="active">Light</span>
+                </div>
+                <div class="avatar"></div>
+            </div>
+        </header>
+
+        <!-- Заголовок доски -->
+        <div class="board-header">
+            <div class="board-title">
+                <h2>Сентябрь 2026</h2>
+                <p>Все что происходит в вашей команде сегодня</p>
+            </div>
+            <button class="btn-add-task"><i class="fas fa-plus"></i> Add Task</button>
+        </div>
+
+        <!-- Канбан доска -->
+        <div class="kanban-board">
+            
+            <!-- Колонка 1: К выполнению -->
+            <div class="column">
+                <div class="column-header">
+                    <span>К выполнению</span>
+                    <span class="task-count">8 tasks</span>
+                </div>
+                <div class="column-body" data-column="todo">
+                    <!-- Карточка 1 -->
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Разработать API для регистрации
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag feature">Feature</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=1');"></div>
+                        </div>
+                    </div>
+                    <!-- Карточка 2 -->
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Написать документацию для SWAGGER
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag docs">Docs</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=2');"></div>
+                        </div>
+                    </div>
+                    <!-- Карточка 3 (с чеклистом) -->
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Написать документацию регистрации
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="checklist">
+                            <label class="checklist-item"><input type="checkbox" checked> Создать complete</label>
+                            <label class="checklist-item"><input type="checkbox"> Создать checklist</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Колонка 2: В процессе -->
+            <div class="column">
+                <div class="column-header">
+                    <span>В процессе</span>
+                    <span class="task-count">5 tasks</span>
+                </div>
+                <div class="column-body" data-column="in-progress">
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Написать документа для регистрации
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag bug">Bug</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=3');"></div>
+                        </div>
+                    </div>
+                    <div class="card" style="border: 1px solid var(--primary);" draggable="true">
+                        <div class="card-title">
+                            Написать документацию для SWAGGER
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag feature">Feature</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=4');"></div>
+                        </div>
+                    </div>
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Разработать API для регистрации
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag bug">Bug</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=5');"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Колонка 3: На проверке -->
+            <div class="column">
+                <div class="column-header">
+                    <span>На проверке</span>
+                    <span class="task-count">3 tasks</span>
+                </div>
+                <div class="column-body" data-column="review">
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Разработать авторизации
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag feature">Feature</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=6');"></div>
+                        </div>
+                    </div>
+                    <div class="card" draggable="true">
+                        <div class="card-title">
+                            Разработать аутентификации
+                            <i class="fas fa-ellipsis-v card-menu"></i>
+                        </div>
+                        <div class="card-tags">
+                            <div class="priority"><div class="priority-dot"></div> High</div>
+                            <span class="tag bug">Bug</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="assignee" style="background-image: url('https://i.pravatar.cc/100?img=7');"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Колонка 4: Готово -->
+            <div class="column">
+                <div class="column-header">
+                    <span>Готово</span>
+                    <span class="task-count">0 tasks</span>
+                </div>
+                <div class="column-body" data-column="done">
+                    <!-- Пустая колонка для перетаскивания -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    // Ждем загрузки DOM
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.card');
+        const columnBodies = document.querySelectorAll('.column-body');
+        const columns = document.querySelectorAll('.column');
+
+        // Функция обновления счетчика задач в колонках
+        function updateCounts() {
+            columns.forEach(column => {
+                const count = column.querySelectorAll('.card').length;
+                column.querySelector('.task-count').textContent = `${count} tasks`;
+            });
+        }
+
+        // Настройка карточек для перетаскивания
+        cards.forEach(card => {
+            // Начало перетаскивания
+            card.addEventListener('dragstart', () => {
+                card.classList.add('dragging');
+            });
+
+            // Конец перетаскивания
+            card.addEventListener('dragend', () => {
+                card.classList.remove('dragging');
+                updateCounts(); // Обновляем счетчики после завершения
+            });
+        });
+
+        // Настройка колонок для приема карточек
+        columnBodies.forEach(body => {
+            // Разрешаем сброс (drop)
+            body.addEventListener('dragover', (e) => {
+                e.preventDefault(); // Необходимо для разрешения drop
+                // Добавляем визуальный эффект на колонку
+                body.closest('.column').classList.add('drag-over');
+            });
+
+            // Убираем визуальный эффект при выходе
+            body.addEventListener('dragleave', (e) => {
+                body.closest('.column').classList.remove('drag-over');
+            });
+
+            // Обработка сброса карточки
+            body.addEventListener('drop', (e) => {
+                e.preventDefault();
+                body.closest('.column').classList.remove('drag-over');
+                
+                // Находим перетаскиваемую карточку
+                const draggingCard = document.querySelector('.card.dragging');
+                
+                if (draggingCard) {
+                    // Перемещаем карточку в новую колонку
+                    body.appendChild(draggingCard);
+                }
+            });
+        });
+
+        // Инициализация счетчиков при первой загрузке
+        updateCounts();
+    });
+</script>
+
+</body>
+</html>
