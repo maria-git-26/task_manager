@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личная аналитика - SynQ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Using Phosphor Icons for a clean, modern look similar to the design -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#f4f7fc',
+                            cyan: '#38bdf8',
+                            blue: '#60a5fa',
+                            purple: '#a78bfa',
+                            teal: '#2dd4bf',
+                            textMain: '#1e293b',
+                            textMuted: '#64748b',
+                            border: '#e2e8f0',
+                            card: '#ffffff'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.03)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f4f7fc; }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="text-brand-textMain font-sans antialiased overflow-hidden flex h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-20 bg-white border-r border-brand-border flex flex-col items-center py-6 shadow-sm z-10 flex-shrink-0">
+        <!-- Logo Icon -->
+        <div class="w-10 h-10 rounded-xl border border-brand-cyan/30 text-brand-cyan flex items-center justify-center mb-10 shadow-sm cursor-pointer">
+            <i class="ph ph-squares-four text-2xl"></i>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="flex-col gap-6 flex flex-1 w-full items-center">
+            <a href="#" class="w-10 h-10 rounded-xl bg-brand-cyan text-white flex items-center justify-center shadow-md shadow-brand-cyan/20 transition-transform hover:scale-105 relative">
+                <i class="ph-fill ph-house text-xl"></i>
+                <!-- Active dot indicator -->
+                <span class="absolute -right-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-brand-cyan block opacity-0"></span>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-xl text-brand-textMuted hover:bg-slate-50 flex items-center justify-center transition-colors">
+                <i class="ph ph-calendar-blank text-xl"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-xl text-brand-textMuted hover:bg-slate-50 flex items-center justify-center transition-colors">
+                <i class="ph ph-kanban text-xl"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-xl text-brand-textMuted hover:bg-slate-50 flex items-center justify-center transition-colors">
+                <i class="ph ph-chart-line-up text-xl"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-xl text-brand-textMuted hover:bg-slate-50 flex items-center justify-center transition-colors">
+                <i class="ph ph-users text-xl"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-xl text-brand-textMuted hover:bg-slate-50 flex items-center justify-center transition-colors mt-auto mb-4">
+                <i class="ph ph-gear text-xl"></i>
+            </a>
+        </nav>
+
+        <!-- Logout -->
+        <a href="#" class="w-10 h-10 rounded-xl text-brand-textMuted hover:bg-slate-50 flex items-center justify-center transition-colors mt-4">
+            <i class="ph ph-sign-out text-xl"></i>
+        </a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
+        
+        <!-- Top Header -->
+        <header class="h-16 px-8 flex items-center justify-between sticky top-0 bg-brand-bg/80 backdrop-blur-md z-10">
+            <div class="text-xl font-semibold tracking-tight text-slate-800">SynQ</div>
+            
+            <div class="flex items-center gap-6">
+                <!-- Theme Toggle -->
+                <div class="flex items-center bg-white rounded-full p-1 border border-brand-border shadow-sm">
+                    <button class="px-3 py-1 text-xs font-medium text-slate-400 rounded-full hover:text-slate-600 transition-colors">Dark</button>
+                    <button class="px-3 py-1 text-xs font-medium bg-brand-cyan text-white rounded-full shadow-sm transition-colors">Light</button>
+                </div>
+                <!-- User Avatar -->
+                <button class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 hover:ring-2 ring-brand-cyan/30 transition-all">
+                    <i class="ph-fill ph-user text-lg"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="p-8 pt-4 max-w-[1600px] mx-auto w-full">
+            
+            <!-- Page Title Area -->
+            <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-1">
+                        <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-brand-blue">
+                            <i class="ph-fill ph-users-three text-xl"></i>
+                        </div>
+                        <h1 class="text-2xl font-semibold text-slate-800">Личная аналитика</h1>
+                    </div>
+                    <p class="text-sm text-slate-400 ml-11">Ваши результаты, активность и эффективность за месяц.</p>
+                    
+                    <div class="mt-4 flex items-center gap-2">
+                        <button class="flex items-center gap-2 px-4 py-2 bg-white border border-brand-border rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors shadow-sm">
+                            <i class="ph ph-calendar-blank text-brand-blue"></i>
+                            Сентябрь 2026
+                            <i class="ph ph-caret-down text-slate-400 ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button class="bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white px-5 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 shadow-md shadow-cyan-500/20 transition-all hover:shadow-lg hover:-translate-y-0.5">
+                    <i class="ph ph-plus font-bold"></i>
+                    Add Task
+                </button>
+            </div>
+
+            <!-- Top Metrics Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-5 rounded-2xl shadow-soft border border-slate-100/50 flex flex-col justify-between">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-brand-blue">
+                            <i class="ph ph-check-square-offset text-lg"></i>
+                        </div>
+                        <span class="text-sm text-slate-500 font-medium">Выполнено задач</span>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-3xl font-semibold text-slate-800 mb-1">115</div>
+                            <div class="text-xs font-medium text-emerald-500 flex items-center gap-1">
+                                <i class="ph ph-arrow-up"></i> 12%
+                                <span class="text-slate-400 font-normal ml-1">к прошлому месяцу</span>
+                            </div>
+                        </div>
+                        <div class="w-20 h-10"><canvas id="spark1"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-5 rounded-2xl shadow-soft border border-slate-100/50 flex flex-col justify-between">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center text-brand-teal">
+                            <i class="ph ph-clock text-lg"></i>
+                        </div>
+                        <span class="text-sm text-slate-500 font-medium">Время в фокусе</span>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-3xl font-semibold text-slate-800 mb-1">28 ч</div>
+                            <div class="text-xs font-medium text-emerald-500 flex items-center gap-1">
+                                <i class="ph ph-arrow-up"></i> 18%
+                                <span class="text-slate-400 font-normal ml-1">к прошлому месяцу</span>
+                            </div>
+                        </div>
+                        <div class="w-20 h-10"><canvas id="spark2"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-5 rounded-2xl shadow-soft border border-slate-100/50 flex flex-col justify-between">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-brand-blue">
+                            <i class="ph ph-target text-lg"></i>
+                        </div>
+                        <span class="text-sm text-slate-500 font-medium">План выполнен</span>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-3xl font-semibold text-slate-800 mb-1">92%</div>
+                            <div class="text-xs font-medium text-emerald-500 flex items-center gap-1">
+                                <i class="ph ph-arrow-up"></i> 7%
+                                <span class="text-slate-400 font-normal ml-1">к прошлому месяцу</span>
+                            </div>
+                        </div>
+                        <div class="w-20 h-10"><canvas id="spark3"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white p-5 rounded-2xl shadow-soft border border-slate-100/50 flex flex-col justify-between">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-brand-purple">
+                            <i class="ph-fill ph-star text-lg"></i>
+                        </div>
+                        <span class="text-sm text-slate-500 font-medium">Средняя продуктивность</span>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-3xl font-semibold text-slate-800 mb-1">8.6 <span class="text-lg text-slate-400 font-medium">/ 10</span></div>
+                            <div class="text-xs font-medium text-emerald-500 flex items-center gap-1">
+                                <i class="ph ph-arrow-up"></i> 14%
+                                <span class="text-slate-400 font-normal ml-1">к прошлому месяцу</span>
+                            </div>
+                        </div>
+                        <div class="w-20 h-10"><canvas id="spark4"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <!-- Main Chart Activity -->
+                <div class="bg-white p-6 rounded-2xl shadow-soft border border-slate-100/50 lg:col-span-2">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-base font-semibold text-slate-800">Динамика активности</h2>
+                        <div class="flex gap-4 text-xs font-medium">
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-brand-blue"></span><span class="text-slate-500">Задачи</span></div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-brand-teal"></span><span class="text-slate-500">Время (ч)</span></div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-brand-purple"></span><span class="text-slate-500">Продуктивность</span></div>
+                        </div>
+                    </div>
+                    <div class="h-64 w-full">
+                        <canvas id="mainActivityChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Donut Chart Time Dist -->
+                <div class="bg-white p-6 rounded-2xl shadow-soft border border-slate-100/50 flex flex-col">
+                    <h2 class="text-base font-semibold text-slate-800 mb-6">Распределение времени</h2>
+                    <div class="flex-1 flex flex-col items-center justify-center gap-8 pt-2">
+                        <!-- Chart Container relative for centered text -->
+                        <div class="relative w-48 h-48">
+                            <canvas id="donutChart"></canvas>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                <span class="text-2xl font-semibold text-slate-800">28 ч</span>
+                                <span class="text-xs text-slate-400 mt-0.5">всего</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Custom Legend -->
+                        <div class="w-full max-w-[220px] space-y-3">
+                            <div class="flex items-center justify-between text-sm">
+                                <div class="flex items-center gap-2 text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-[#3b82f6]"></span>Работа</div>
+                                <div class="flex items-center gap-4"><span class="text-slate-400 text-xs w-8 text-right">52%</span><span class="font-medium text-slate-700 w-8 text-right">14 ч</span></div>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <div class="flex items-center gap-2 text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-[#2dd4bf]"></span>Задачи</div>
+                                <div class="flex items-center gap-4"><span class="text-slate-400 text-xs w-8 text-right">24%</span><span class="font-medium text-slate-700 w-8 text-right">6 ч</span></div>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <div class="flex items-center gap-2 text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-[#a855f7]"></span>Обучение</div>
+                                <div class="flex items-center gap-4"><span class="text-slate-400 text-xs w-8 text-right">12%</span><span class="font-medium text-slate-700 w-8 text-right">3 ч</span></div>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <div class="flex items-center gap-2 text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-[#c084fc]"></span>Личное</div>
+                                <div class="flex items-center gap-4"><span class="text-slate-400 text-xs w-8 text-right">12%</span><span class="font-medium text-slate-700 w-8 text-right">3 ч</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Top Tasks -->
+                <div class="bg-white p-6 rounded-2xl shadow-soft border border-slate-100/50">
+                    <h2 class="text-base font-semibold text-slate-800 mb-5">Топ задач <span class="text-slate-400 font-normal text-sm">(по времени)</span></h2>
+                    <div class="space-y-5">
+                        <!-- Task 1 -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-slate-600 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>Разработка API для регистрации</span>
+                                <span class="font-medium text-slate-700">6 ч</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2">
+                                <div class="bg-blue-400 h-2 rounded-full" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        <!-- Task 2 -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-slate-600 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span>Написать документацию</span>
+                                <span class="font-medium text-slate-700">4 ч</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2">
+                                <div class="bg-teal-400 h-2 rounded-full" style="width: 40%"></div>
+                            </div>
+                        </div>
+                        <!-- Task 3 -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-slate-600 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>Дизайн интерфейса</span>
+                                <span class="font-medium text-slate-700">3 ч</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2">
+                                <div class="bg-purple-400 h-2 rounded-full" style="width: 30%"></div>
+                            </div>
+                        </div>
+                        <!-- Task 4 -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-slate-600 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-cyan-300"></span>Тестирование</span>
+                                <span class="font-medium text-slate-700">2 ч</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2">
+                                <div class="bg-cyan-300 h-2 rounded-full" style="width: 20%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="bg-white p-6 rounded-2xl shadow-soft border border-slate-100/50">
+                    <h2 class="text-base font-semibold text-slate-800 mb-5">Достижения месяца</h2>
+                    <div class="space-y-4">
+                        <!-- Ach 1 -->
+                        <div class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center">
+                                    <i class="ph-fill ph-check-circle text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-slate-700">Выполнено задач</div>
+                                    <div class="text-xs text-slate-400 mt-0.5">115 задач</div>
+                                </div>
+                            </div>
+                            <span class="text-xs font-medium text-emerald-500 flex items-center gap-0.5"><i class="ph ph-arrow-up"></i> 12%</span>
+                        </div>
+                        <!-- Ach 2 -->
+                        <div class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center">
+                                    <i class="ph-fill ph-trophy text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-slate-700">Лучший день</div>
+                                    <div class="text-xs text-slate-400 mt-0.5">15 сентября</div>
+                                </div>
+                            </div>
+                            <span class="text-xs font-medium text-slate-400">18 задач</span>
+                        </div>
+                        <!-- Ach 3 -->
+                        <div class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-orange-50 text-orange-400 flex items-center justify-center">
+                                    <i class="ph-fill ph-fire text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-slate-700">Рекорд фокуса</div>
+                                    <div class="text-xs text-slate-400 mt-0.5">5 часов подряд</div>
+                                </div>
+                            </div>
+                            <span class="text-xs font-medium text-emerald-500 flex items-center gap-0.5"><i class="ph ph-arrow-up"></i> 22%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Productivity by Day Bar Chart -->
+                <div class="bg-white p-6 rounded-2xl shadow-soft border border-slate-100/50">
+                    <h2 class="text-base font-semibold text-slate-800 mb-6">Продуктивность по дням</h2>
+                    <div class="h-[200px] w-full">
+                        <canvas id="productivityBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-slate-200 text-xs text-slate-400 pb-4">
+                <div>© 2026 SynQ</div>
+                <div class="flex gap-6 mt-4 sm:mt-0">
+                    <a href="#" class="hover:text-slate-600 transition-colors">Поддержка</a>
+                    <a href="#" class="hover:text-slate-600 transition-colors">Документация</a>
+                    <a href="#" class="hover:text-slate-600 transition-colors">Политика конфиденциальности</a>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <script>
+        // Common minimal options for sparklines
+        const sparklineOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: {
+                x: { display: false },
+                y: { display: false, min: 0 }
+            },
+            elements: { point: { radius: 0 } },
+            layout: { padding: 0 }
+        };
+
+        // Sparkline 1
+        new Chart(document.getElementById('spark1').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: [1,2,3,4,5,6,7,8],
+                datasets: [{ data: [10, 15, 20, 18, 25, 22, 30, 35], borderColor: '#60a5fa', borderWidth: 2, tension: 0.4 }]
+            },
+            options: sparklineOptions
+        });
+
+        // Sparkline 2
+        new Chart(document.getElementById('spark2').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: [1,2,3,4,5,6,7,8],
+                datasets: [{ data: [5, 10, 8, 15, 20, 25, 22, 28], borderColor: '#2dd4bf', borderWidth: 2, tension: 0.4 }]
+            },
+            options: sparklineOptions
+        });
+
+        // Sparkline 3
+        new Chart(document.getElementById('spark3').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: [1,2,3,4,5,6,7,8],
+                datasets: [{ data: [20, 22, 25, 24, 28, 32, 35, 40], borderColor: '#60a5fa', borderWidth: 2, tension: 0.4 }]
+            },
+            options: sparklineOptions
+        });
+
+        // Sparkline 4
+        new Chart(document.getElementById('spark4').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: [1,2,3,4,5,6,7,8],
+                datasets: [{ data: [6, 7, 6.5, 8, 7.5, 8.2, 8.5, 8.6], borderColor: '#a78bfa', borderWidth: 2, tension: 0.4 }]
+            },
+            options: sparklineOptions
+        });
+
+        // Main Activity Mixed Chart
+        const ctxMain = document.getElementById('mainActivityChart').getContext('2d');
+        const mainLabels = ['1 сен', '', '5 сен', '', '', '10 сен', '', '', '15 сен', '', '', '20 сен', '', '', '25 сен', '', '', '30 сен'];
+        new Chart(ctxMain, {
+            type: 'line',
+            data: {
+                labels: mainLabels,
+                datasets: [
+                    {
+                        label: 'Задачи',
+                        data: [15, 20, 18, 25, 15, 22, 20, 18, 28, 25, 20, 25, 32, 28, 25, 30, 28, 26],
+                        borderColor: '#60a5fa', // Blue
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Время (ч)',
+                        data: [10, 12, 11, 15, 8, 14, 12, 10, 16, 14, 12, 15, 18, 16, 14, 17, 16, 15],
+                        borderColor: '#2dd4bf', // Teal
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Продуктивность',
+                        data: [5, 7, 6, 8, 4, 7, 6, 5, 9, 8, 6, 8, 10, 9, 7, 9, 8, 7],
+                        borderColor: '#a78bfa', // Purple
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        yAxisID: 'y'
+                    },
+                    {
+                        type: 'bar',
+                        label: 'Volume',
+                        data: [40, 50, 45, 60, 30, 55, 45, 40, 70, 60, 50, 65, 80, 70, 60, 75, 70, 65],
+                        backgroundColor: '#e0e7ff', // Very light indigo/blue for background bars
+                        borderRadius: 4,
+                        barPercentage: 0.6,
+                        yAxisID: 'y1',
+                        order: 4 // Draw behind lines
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'white',
+                        titleColor: '#1e293b',
+                        bodyColor: '#64748b',
+                        borderColor: '#e2e8f0',
+                        borderWidth: 1,
+                        padding: 10,
+                        boxPadding: 4,
+                        usePointStyle: true,
+                        filter: function(tooltipItem) {
+                            return tooltipItem.datasetIndex !== 3; // Hide bar from tooltip
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false, drawBorder: false },
+                        ticks: {
+                            color: '#94a3b8',
+                            font: { size: 11 },
+                            maxRotation: 0,
+                            autoSkip: false,
+                            callback: function(val, index) {
+                                return this.getLabelForValue(val) !== '' ? this.getLabelForValue(val) : '';
+                            }
+                        }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        min: 0,
+                        max: 40,
+                        grid: { color: '#f1f5f9', drawBorder: false, borderDash: [5, 5] },
+                        ticks: { color: '#94a3b8', font: { size: 11 }, stepSize: 10 }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        min: 0,
+                        max: 100,
+                        grid: { display: false, drawBorder: false },
+                        ticks: { color: '#94a3b8', font: { size: 11 }, stepSize: 25 }
+                    }
+                },
+                elements: { point: { radius: 0, hitRadius: 10, hoverRadius: 4 } }
+            }
+        });
+
+        // Donut Chart
+        const ctxDonut = document.getElementById('donutChart').getContext('2d');
+        new Chart(ctxDonut, {
+            type: 'doughnut',
+            data: {
+                labels: ['Работа', 'Задачи', 'Обучение', 'Личное'],
+                datasets: [{
+                    data: [52, 24, 12, 12],
+                    backgroundColor: ['#3b82f6', '#2dd4bf', '#a855f7', '#c084fc'], // Blue, Teal, D.Purple, L.Purple
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%', // Make it thin
+                plugins: { legend: { display: false }, tooltip: { enabled: true } }
+            }
+        });
+
+        // Bottom Bar Chart (Productivity by day)
+        const ctxBar = document.getElementById('productivityBarChart').getContext('2d');
+        const barLabels = ['1 сен','','','','5 сен','','','','10 сен','','','','15 сен','','','','20 сен','','','','25 сен','','','','30 сен'];
+        // Dummy data to approximate the uneven bars
+        const barData = [3, 2, 4, 3, 5, 6, 4, 3, 5, 2, 3, 4, 6, 5, 3, 4, 5, 4, 6, 5, 4, 6, 4, 5, 3];
+        
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: barLabels,
+                datasets: [{
+                    data: barData,
+                    backgroundColor: '#93c5fd', // blue-300
+                    hoverBackgroundColor: '#3b82f6', // blue-500 on hover
+                    borderRadius: 4,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                scales: {
+                    x: {
+                        grid: { display: false, drawBorder: false },
+                        ticks: {
+                            color: '#94a3b8',
+                            font: { size: 10 },
+                            autoSkip: false,
+                            maxRotation: 0,
+                            callback: function(val, index) {
+                                return this.getLabelForValue(val) !== '' ? this.getLabelForValue(val) : '';
+                            }
+                        }
+                    },
+                    y: {
+                        min: 0,
+                        max: 10,
+                        grid: { color: '#f1f5f9', drawBorder: false, borderDash: [5, 5] },
+                        ticks: { color: '#94a3b8', font: { size: 10 }, stepSize: 5 }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

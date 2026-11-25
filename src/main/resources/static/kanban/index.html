@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SynQ Kanban Board</title>
+    <title>Kanban Board</title>
     <!-- Шрифты и иконки -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link rel="stylesheet" href="style.css">
 
     <style>
         :root {
@@ -22,6 +22,7 @@
             --radius: 16px;
             --blue-bg: #bcd7f2;
             --bg-sidebar: #f7fafc;
+            --main-bg: #fff;
 
             --container-backgr: rgba(240, 246, 252, 0.7);
             --bg-color: radial-gradient(circle at 30% 20%, #cfe3f7, var(--blue-bg) 60%);
@@ -67,7 +68,7 @@
             color: var(--text-main);
             height: 100vh;
             display: flex;
-            padding: 20px;
+
             overflow: hidden;
         }
 
@@ -77,7 +78,7 @@
             width: 100%;
             height: 100%;
             background: #ffffff;
-            border-radius: 20px;
+            /* border-radius: 20px; */
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             overflow: hidden;
         }
@@ -130,9 +131,7 @@
             font-weight: bold;
         }
 
-        .sidebar-bottom {
-            margin-top: auto;
-        }
+
 
         /* Основной контент */
         .main-content {
@@ -409,16 +408,6 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
-        body {
-            background: radial-gradient(circle at 30% 20%, #cfe3f7, var(--blue-bg) 60%);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
         body.dark-theme{
             background: radial-gradient(circle at 30% 20%, #121212, #2c3e50  60%);
             --container-backgr: #1e222b;
@@ -428,6 +417,8 @@
             --schedule-bg: #56565C;
             --bg-sidebar:#1e222b;
             --buttons-bg: #272d37;
+            --main-bg: #1e222b;
+            --bg-column: #272d37;
         }
 
 
@@ -435,11 +426,11 @@
         /* Main Container */
         .app-container {
             width: 100%;
-            max-width: 1200px;
-            min-width: 1300px;
+            /* max-width: 1200px;
+            min-width: 1300px; */
             background: white;
             backdrop-filter: blur(20px);
-            border-radius: 24px;
+            /* border-radius: 24px; */
             border: 1px solid var(--card-border);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
             display: flex;
@@ -1016,15 +1007,14 @@
         }
 
         /* Footer */
-        .footer {
+        footer {
+            padding: 15px 30px;
+            border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
-            color: var(--text-muted);
             font-size: 12px;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-            background: var(--bg-sidebar);
+            color: var(--text-muted);
+            background: var(--main-bg);
         }
 
         .footer-links {
@@ -1033,12 +1023,12 @@
         }
     </style>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style_1.css">
-    <link rel="stylesheet" href="style_2.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
@@ -1046,23 +1036,56 @@
 
 
     <!-- Navigation Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-top">
-            <div class="logo-icon">
-                <i class="fa fa-globe"></i>
+    <aside class="w-64 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between hidden md:flex shrink-0 select-none">
+        <div>
+            <!-- Logo area -->
+            <div class="h-20 flex items-center px-6 gap-3">
+                <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex gap-1">
+                        <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                        <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                        <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                    </div>
+                </div>
             </div>
+
+            <!-- Navigation Links -->
+            <nav class="px-3 space-y-1 mt-2">
+                <a href="#" onclick="toMainMenu()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Главная
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                    Задачи
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    Канбан
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-semibold text-sm transition-colors">
+                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    Аналитика
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    Команда
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Настройки
+                </a>
+            </nav>
         </div>
-        <nav class="sidebar-nav">
-            <a href="#" class="nav-item" onclick="toMainMenu()"><i class="fa-solid fa-house"></i></a>
-            <a href="#" class="nav-item active"><i class="fa-regular fa-clipboard"></i></a>
-            <a href="#" class="nav-item"><i class="fa-brands fa-trello"></i></a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-chart-line"></i></a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-user-group"></i></a>
-            <div class="nav-divider"></div>
-            <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i></a>
-        </nav>
-        <div class="sidebar-bottom">
-            <a href="#" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i></a>
+
+        <!-- Footer exit icon -->
+        <div class="p-6">
+            <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            </button>
         </div>
     </aside>
 

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ru" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynQ Settings Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0085ff',
+                            600: '#0066cc',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom scrollbar & smooth styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #0085ff;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #0085ff;
+        }
+    </style>
+</head>
+<body class="bg-[#edf3f8] dark:bg-[#0b1320] text-[#1e293b] dark:text-[#f8fafc] min-h-screen flex selection:bg-brand-500 selection:text-white transition-colors duration-300">
+
+    <!-- Toast Notification Message Box -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 text-sm font-medium">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-message">Настройки успешно сохранены</span>
+    </div>
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="w-64 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between hidden md:flex shrink-0 select-none">
+        <div>
+            <!-- Logo area -->
+            <div class="h-20 flex items-center px-6 gap-3">
+                <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex gap-1">
+                        <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                        <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                        <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="px-3 space-y-1 mt-2">
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Главная
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                    Задачи
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    Канбан
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-semibold text-sm transition-colors">
+                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    Аналитика
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    Команда
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Настройки
+                </a>
+            </nav>
+        </div>
+        
+
+        <!-- Logout Bottom -->
+        <div>
+            <button onclick="showToast('Выход из системы...')" class="w-11 h-11 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 flex items-center justify-center transition-colors" title="Выйти">
+                <i class="fa-solid fa-right-from-bracket text-lg"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        
+        <!-- HEADER -->
+        <header class="h-20 bg-white/80 dark:bg-[#131d2e]/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-8 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+            <!-- Brand Logo text -->
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">SynQ</span>
+            </div>
+
+            <!-- Top Right controls -->
+            <div class="flex items-center space-x-6">
+                <!-- Theme Switcher Pill -->
+                <div class="bg-slate-100 dark:bg-slate-800 p-1 rounded-full flex items-center border border-slate-200 dark:border-slate-700">
+                    <button id="theme-dark-btn" onclick="setTheme('dark')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-500 dark:text-slate-300 transition-all flex items-center space-x-1.5">
+                        <i class="fa-solid fa-moon"></i>
+                        <span>Dark</span>
+                    </button>
+                    <button id="theme-light-btn" onclick="setTheme('light')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-slate-700 text-slate-800 dark:text-white shadow-sm transition-all flex items-center space-x-1.5">
+                        <i class="fa-solid fa-sun"></i>
+                        <span>Light</span>
+                    </button>
+                </div>
+
+                <!-- User Profile Avatar -->
+                <button onclick="showToast('Профиль Алексей Смирнов')" class="flex items-center space-x-3 focus:outline-none group">
+                    <div class="w-9 h-9 rounded-full bg-brand-500 text-white font-semibold flex items-center justify-center shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
+                        АС
+                    </div>
+                </button>
+            </div>
+        </header>
+
+        <!-- DASHBOARD BODY CONTAINER -->
+        <main class="p-8 max-w-[1500px] w-full mx-auto flex-1">
+            
+            <!-- Page Title Header -->
+            <div class="mb-8">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand-100 dark:bg-brand-950/60 text-brand-500 flex items-center justify-center">
+                        <i class="fa-solid fa-gear text-lg"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Настройки</h1>
+                </div>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 ml-13">Управляйте параметрами аккаунта и настройками системы, чтобы настроить SynQ под себя.</p>
+            </div>
+
+            <!-- GRID CARDS LAYOUT -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+
+                <!-- 1. ПРОФИЛЬ АККАУНТА -->
+                <div class="bg-white dark:bg-[#131d2e] rounded-2xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-regular fa-user text-brand-500 text-lg"></i>
+                            <h3 class="font-semibold text-slate-900 dark:text-white">Профиль аккаунта</h3>
+                        </div>
+                        <button onclick="showToast('Редактирование профиля')" class="text-xs font-medium text-brand-500 hover:text-brand-600 transition-colors">
+                            Изменить <i class="fa-solid fa-chevron-right text-[10px] ml-0.5"></i>
+                        </button>
+                    </div>
+
+                    <!-- User Card Header info -->
+                    <div class="flex items-center space-x-4 my-5 py-2">
+                        <div class="w-16 h-16 rounded-2xl bg-cyan-400 dark:bg-cyan-600 text-white font-bold text-xl flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                            AS
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-900 dark:text-white text-lg">Алексей Смирнов</h4>
+                            <div class="flex items-center space-x-1.5 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                <i class="fa-solid fa-shield-halved text-brand-500"></i>
+                                <span>Администратор</span>
+                            </div>
+                            <div class="flex items-center space-x-1.5 text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                <i class="fa-regular fa-envelope"></i>
+                                <span>alex@company.com</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fields Details List -->
+                    <div class="space-y-3.5 pt-2 border-t border-slate-100 dark:border-slate-800 text-sm">
+                        <div class="flex items-center justify-between py-1 text-slate-600 dark:text-slate-300">
+                            <div class="flex items-center space-x-2 text-slate-400">
+                                <i class="fa-regular fa-user w-5 text-center"></i>
+                                <span class="text-slate-500 dark:text-slate-400">Имя</span>
+                            </div>
+                            <span class="font-medium text-slate-900 dark:text-white">Алексей Смирнов</span>
+                        </div>
+                        <div class="flex items-center justify-between py-1 text-slate-600 dark:text-slate-300">
+                            <div class="flex items-center space-x-2 text-slate-400">
+                                <i class="fa-regular fa-envelope w-5 text-center"></i>
+                                <span class="text-slate-500 dark:text-slate-400">Email</span>
+                            </div>
+                            <span class="font-medium text-slate-900 dark:text-white">alex@company.com</span>
+                        </div>
+                        <div class="flex items-center justify-between py-1 text-slate-600 dark:text-slate-300">
+                            <div class="flex items-center space-x-2 text-slate-400">
+                                <i class="fa-solid fa-phone w-5 text-center"></i>
+                                <span class="text-slate-500 dark:text-slate-400">Телефон</span>
+                            </div>
+                            <span class="font-medium text-slate-900 dark:text-white">+7 (900) 123-45-67</span>
+                        </div>
+                        <div class="flex items-center justify-between py-1 text-slate-600 dark:text-slate-300">
+                            <div class="flex items-center space-x-2 text-slate-400">
+                                <i class="fa-regular fa-building w-5 text-center"></i>
+                                <span class="text-slate-500 dark:text-slate-400">Компания</span>
+                            </div>
+                            <span class="font-medium text-slate-900 dark:text-white">ООО «СинкКью»</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. БЕЗОПАСНОСТЬ -->
+                <div class="bg-white dark:bg-[#131d2e] rounded-2xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-shield text-brand-500 text-lg"></i>
+                            <h3 class="font-semibold text-slate-900 dark:text-white">Безопасность</h3>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                    </div>
+
+                    <div class="divide-y divide-slate-100 dark:divide-slate-800 mt-2">
+                        <!-- Item 1 -->
+                        <div onclick="showToast('Смена пароля')" class="py-3.5 flex items-center justify-between cursor-pointer group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center group-hover:bg-brand-50 group-hover:text-brand-500 transition-colors">
+                                    <i class="fa-solid fa-key text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-slate-900 dark:text-white">Смена пароля</h4>
+                                    <p class="text-xs text-slate-400">Обновите пароль для защиты аккаунта</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-brand-500 transition-colors"></i>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="py-3.5 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-shield-halved text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-slate-900 dark:text-white">Двухфакторная аутентификация</h4>
+                                    <p class="text-xs text-slate-400">Дополнительная защита вашего аккаунта</p>
+                                </div>
+                            </div>
+                            <!-- Toggle switch -->
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer" onchange="showToast('Двухфакторная аутентификация ' + (this.checked ? 'включена' : 'выключена'))">
+                                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                            </label>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div onclick="showToast('Активные сессии')" class="py-3.5 flex items-center justify-between cursor-pointer group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center group-hover:bg-brand-50 group-hover:text-brand-500 transition-colors">
+                                    <i class="fa-solid fa-desktop text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-slate-900 dark:text-white">Активные сессии</h4>
+                                    <p class="text-xs text-slate-400">Управление устройствами и сессиями</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-brand-500 transition-colors"></i>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div onclick="showToast('История входов')" class="py-3.5 flex items-center justify-between cursor-pointer group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center group-hover:bg-brand-50 group-hover:text-brand-500 transition-colors">
+                                    <i class="fa-regular fa-clock text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-slate-900 dark:text-white">История входов</h4>
+                                    <p class="text-xs text-slate-400">Просмотр последних действий</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-brand-500 transition-colors"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. НАСТРОЙКИ СИСТЕМЫ -->
+                <div class="bg-white dark:bg-[#131d2e] rounded-2xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-gear text-brand-500 text-lg"></i>
+                            <h3 class="font-semibold text-slate-900 dark:text-white">Настройки системы</h3>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 mt-4">
+                        <!-- Select 1 -->
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-sm font-medium text-slate-900 dark:text-white">Язык интерфейса</h4>
+                                <p class="text-xs text-slate-400">Выберите язык приложения</p>
+                            </div>
+                            <div class="relative w-36">
+                                <select onchange="showToast('Язык изменен: ' + this.value)" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-3 py-2.5 appearance-none focus:outline-none focus:border-brand-500 cursor-pointer">
+                                    <option>Русский</option>
+                                    <option>English</option>
+                                    <option>Deutsch</option>
+                                </select>
+                                <i class="fa-solid fa-chevron-down absolute right-3 top-3 text-[10px] text-slate-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+
+                        <!-- Select 2 -->
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-sm font-medium text-slate-900 dark:text-white">Часовой пояс</h4>
+                                <p class="text-xs text-slate-400">Ваш часовой пояс</p>
+                            </div>
+                            <div class="relative w-40">
+                                <select onchange="showToast('Часовой пояс изменен')" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-3 py-2.5 appearance-none focus:outline-none focus:border-brand-500 cursor-pointer">
+                                    <option>(GMT+3) Москва</option>
+                                    <option>(GMT+0) Лондон</option>
+                                    <option>(GMT+1) Берлин</option>
+                                </select>
+                                <i class="fa-solid fa-chevron-down absolute right-3 top-3 text-[10px] text-slate-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+
+                        <!-- Select 3 -->
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-sm font-medium text-slate-900 dark:text-white">Формат даты</h4>
+                                <p class="text-xs text-slate-400">Как отображать даты</p>
+                            </div>
+                            <div class="relative w-36">
+                                <select onchange="showToast('Формат даты изменен')" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-3 py-2.5 appearance-none focus:outline-none focus:border-brand-500 cursor-pointer">
+                                    <option>Дд.ММ.ГГГГ</option>
+                                    <option>ММ/Дд/ГГГГ</option>
+                                    <option>ГГГГ-ММ-Дд</option>
+                                </select>
+                                <i class="fa-solid fa-chevron-down absolute right-3 top-3 text-[10px] text-slate-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+
+                        <!-- Select 4 -->
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-sm font-medium text-slate-900 dark:text-white">Формат времени</h4>
+                                <p class="text-xs text-slate-400">Как отображать время</p>
+                            </div>
+                            <div class="relative w-36">
+                                <select onchange="showToast('Формат времени изменен')" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-3 py-2.5 appearance-none focus:outline-none focus:border-brand-500 cursor-pointer">
+                                    <option>24 часа</option>
+                                    <option>12 часов (AM/PM)</option>
+                                </select>
+                                <i class="fa-solid fa-chevron-down absolute right-3 top-3 text-[10px] text-slate-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. УВЕДОМЛЕНИЯ -->
+                <div class="bg-white dark:bg-[#131d2e] rounded-2xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-regular fa-bell text-brand-500 text-lg"></i>
+                            <h3 class="font-semibold text-slate-900 dark:text-white">Уведомления</h3>
+                        </div>
+                    </div>
+
+                    <!-- Master Toggle -->
+                    <div class="py-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
+                        <div>
+                            <h4 class="text-sm font-medium text-slate-900 dark:text-white">Получать уведомления</h4>
+                            <p class="text-xs text-slate-400">Включите, чтобы не пропускать важные события</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" checked class="sr-only peer" onchange="showToast('Уведомления ' + (this.checked ? 'активированы' : 'отключены'))">
+                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                        </label>
+                    </div>
+
+                    <!-- Sub Toggles List -->
+                    <div class="space-y-3.5 mt-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2.5 text-sm text-slate-700 dark:text-slate-300">
+                                <i class="fa-regular fa-calendar-check text-slate-400 w-5"></i>
+                                <span>Задачи и дедлайны</span>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer" onchange="showToast('Настройка обновлена')">
+                                <div class="w-11 h-6 bg-slate-200 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2.5 text-sm text-slate-700 dark:text-slate-300">
+                                <i class="fa-regular fa-comment text-slate-400 w-5"></i>
+                                <span>Комментарии</span>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer" onchange="showToast('Настройка обновлена')">
+                                <div class="w-11 h-6 bg-slate-200 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2.5 text-sm text-slate-700 dark:text-slate-300">
+                                <i class="fa-regular fa-at text-slate-400 w-5"></i>
+                                <span>Упоминания</span>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer" onchange="showToast('Настройка обновлена')">
+                                <div class="w-11 h-6 bg-slate-200 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2.5 text-sm text-slate-700 dark:text-slate-300">
+                                <i class="fa-regular fa-circle-info text-slate-400 w-5"></i>
+                                <span>Системные уведомления</span>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer" onchange="showToast('Настройка обновлена')">
+                                <div class="w-11 h-6 bg-slate-200 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. ИНТЕГРАЦИИ -->
+                <div class="bg-white dark:bg-[#131d2e] rounded-2xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-link text-brand-500 text-lg"></i>
+                            <h3 class="font-semibold text-slate-900 dark:text-white">Интеграции</h3>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-3 mb-4">Подключите сторонние сервисы для удобной работы и синхронизации данных.</p>
+
+                    <div class="divide-y divide-slate-100 dark:divide-slate-800">
+                        <!-- Google Workspace -->
+                        <div onclick="toggleIntegration(this, 'Google Workspace')" class="py-3 flex items-center justify-between cursor-pointer group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-7 h-7 flex items-center justify-center">
+                                    <i class="fa-brands fa-google text-red-500 text-base"></i>
+                                </div>
+                                <span class="text-sm font-medium text-slate-900 dark:text-white">Google Workspace</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="status-badge flex items-center space-x-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                    <span>Подключено</span>
+                                </span>
+                                <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-brand-500"></i>
+                            </div>
+                        </div>
+
+                        <!-- Microsoft 365 -->
+                        <div onclick="toggleIntegration(this, 'Microsoft 365')" class="py-3 flex items-center justify-between cursor-pointer group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-7 h-7 flex items-center justify-center">
+                                    <i class="fa-brands fa-microsoft text-blue-500 text-base"></i>
+                                </div>
+                                <span class="text-sm font-medium text-slate-900 dark:text-white">Microsoft 365</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="status-badge flex items-center space-x-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                    <span>Подключено</span>
+                                </span>
+                                <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-brand-500"></i>
+                            </div>
+                        </div>
+
+                        <!-- Slack -->
+                        <div onclick="toggleIntegration(this, 'Slack')" class="py-3 flex items-center justify-between cursor-pointer group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-7 h-7 flex items-center justify-center">
+                                    <i class="fa-brands fa-slack text-purple-500 text-base"></i>
+                                </div>
+                                <span class="text-sm font-medium text-slate-900 dark:text-white">Slack</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="status-badge flex items-center space-x-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                                    <span>Не подключено</span>
+                                </span>
+                                <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-brand-500"></i>
+                            </div>
+                        </div>
+
+                        <!-- Telegram -->
+                        <div onclick="toggleIntegration(this, 'Telegram')" class="py-3 flex items-center justify-between cursor-pointer group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-7 h-7 flex items-center justify-center">
+                                    <i class="fa-brands fa-telegram text-sky-500 text-base"></i>
+                                </div>
+                                <span class="text-sm font-medium text-slate-900 dark:text-white">Telegram</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="status-badge flex items-center space-x-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                    <span>Подключено</span>
+                                </span>
+                                <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-brand-500"></i>
+                            </div>
+                        </div>
+
+                        <!-- API -->
+                        <div onclick="toggleIntegration(this, 'API')" class="py-3 flex items-center justify-between cursor-pointer group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-7 h-7 flex items-center justify-center">
+                                    <i class="fa-solid fa-code text-slate-700 dark:text-slate-300 text-base"></i>
+                                </div>
+                                <span class="text-sm font-medium text-slate-900 dark:text-white">API</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="status-badge flex items-center space-x-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                    <span>Подключено</span>
+                                </span>
+                                <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-brand-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. ВНЕШНИЙ ВИД -->
+                <div class="bg-white dark:bg-[#131d2e] rounded-2xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-paintbrush text-brand-500 text-lg"></i>
+                            <h3 class="font-semibold text-slate-900 dark:text-white">Внешний вид</h3>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-3 mb-4">Настройте внешний вид интерфейса под свои предпочтения.</p>
+
+                    <h4 class="text-sm font-medium text-slate-900 dark:text-white mb-3">Тема</h4>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Light Theme Card Choice -->
+                        <button onclick="setTheme('light')" id="card-light-btn" class="flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand-500 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-300 font-medium text-sm transition-all shadow-sm">
+                            <i class="fa-solid fa-sun text-brand-500"></i>
+                            <span>Светлая</span>
+                        </button>
+                        <!-- Dark Theme Card Choice -->
+                        <button onclick="setTheme('dark')" id="card-dark-btn" class="flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand-500 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 font-medium text-sm transition-all shadow-sm">
+                            <i class="fa-solid fa-moon text-indigo-400"></i>
+                            <span>Темная</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+            <footer class="mt-16 pt-8 pb-6 border-t border-slate-200/80 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                <div class="mb-4 md:mb-0">
+                    © 2026 SynQ
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="#" onclick="showToast('Переход в Поддержку')" class="hover:text-brand-500 transition-colors">Поддержка</a>
+                    <a href="#" onclick="showToast('Переход к Документации')" class="hover:text-brand-500 transition-colors">Документация</a>
+                    <a href="#" onclick="showToast('Политика конфиденциальности')" class="hover:text-brand-500 transition-colors">Политика конфиденциальности</a>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- JavaScript Interactions Logic -->
+    <script>
+        // Toast Notification System
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const messageSpan = document.getElementById('toast-message');
+            messageSpan.textContent = message;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Theme Switcher Logic
+        function setTheme(theme) {
+            const html = document.documentElement;
+            const darkBtn = document.getElementById('theme-dark-btn');
+            const lightBtn = document.getElementById('theme-light-btn');
+            const cardLightBtn = document.getElementById('card-light-btn');
+            const cardDarkBtn = document.getElementById('card-dark-btn');
+
+            if (theme === 'dark') {
+                html.classList.add('dark');
+                localStorage.setItem('synq_theme', 'dark');
+                
+                // Top header buttons styling
+                darkBtn.className = "px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-700 text-white shadow-sm transition-all flex items-center space-x-1.5";
+                lightBtn.className = "px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-400 dark:text-slate-300 transition-all flex items-center space-x-1.5";
+
+                // Bottom card buttons styling
+                cardDarkBtn.className = "flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border border-brand-500 bg-brand-500 text-white font-medium text-sm transition-all shadow-md shadow-brand-500/20";
+                cardLightBtn.className = "flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 font-medium text-sm transition-all";
+                
+                showToast('Включена темная тема');
+            } else {
+                html.classList.remove('dark');
+                localStorage.setItem('synq_theme', 'light');
+
+                // Top header buttons styling
+                lightBtn.className = "px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-800 shadow-sm transition-all flex items-center space-x-1.5";
+                darkBtn.className = "px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-500 transition-all flex items-center space-x-1.5";
+
+                // Bottom card buttons styling
+                cardLightBtn.className = "flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border border-brand-500 bg-brand-500 text-white font-medium text-sm transition-all shadow-md shadow-brand-500/20";
+                cardDarkBtn.className = "flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-600 font-medium text-sm transition-all";
+                
+                showToast('Включена светлая тема');
+            }
+        }
+
+        // Integration toggle simulation
+        function toggleIntegration(element, name) {
+            const badge = element.querySelector('.status-badge');
+            const isConnected = badge.textContent.includes('Подключено');
+            
+            if (isConnected) {
+                badge.className = "status-badge flex items-center space-x-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full";
+                badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span><span>Не подключено</span>';
+                showToast(`Сервис ${name} отключен`);
+            } else {
+                badge.className = "status-badge flex items-center space-x-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full";
+                badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>Подключено</span>';
+                showToast(`Сервис ${name} успешно подключен`);
+            }
+        }
+
+        // Initialize theme based on preference
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('synq_theme') || 'light';
+            setTheme(savedTheme);
+        });
+    </script>
+</body>
+</html>

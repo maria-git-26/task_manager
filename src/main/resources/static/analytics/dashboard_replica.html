@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ru" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личная аналитика — Ваши результаты за сентябрь</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbars for clean look */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-[#f8fafc] dark:bg-[#0f172a] text-[#0f172a] dark:text-[#f8fafc] min-h-screen flex transition-colors duration-200">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between hidden md:flex shrink-0 select-none">
+        <div>
+            <!-- Logo area -->
+            <div class="h-20 flex items-center px-6 gap-3">
+                <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex gap-1">
+                        <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                        <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                        <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="px-3 space-y-1 mt-2">
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Главная
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                    Задачи
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    Проекты
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-semibold text-sm transition-colors">
+                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    Аналитика
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    Календарь
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    Команда
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Настройки
+                </a>
+            </nav>
+        </div>
+
+        <!-- Footer exit icon -->
+        <div class="p-6">
+            <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <!-- Top Bar -->
+        <header class="h-20 px-6 lg:px-10 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-[#1e293b]/50 backdrop-blur-md sticky top-0 z-30">
+            <div class="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                <span>Личная аналитика</span>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <!-- Theme Switcher -->
+                <div class="bg-slate-100 dark:bg-slate-800 p-1 rounded-full flex items-center text-xs font-medium border border-slate-200 dark:border-slate-700 select-none">
+                    <button id="lightThemeBtn" onclick="setTheme('light')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        Светлая
+                    </button>
+                    <button id="darkThemeBtn" onclick="setTheme('dark')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                        Тёмная
+                    </button>
+                </div>
+
+                <!-- User profile avatar -->
+                <div class="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-700">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces" alt="Аватар пользователя" class="w-9 h-9 rounded-full object-cover border border-slate-300 dark:border-slate-600">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Container -->
+        <div class="p-6 lg:p-10 space-y-8 max-w-[1600px] w-full mx-auto">
+            
+            <!-- Header title row -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Ваши результаты за сентябрь</h1>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Вы выполнили <span class="font-semibold text-slate-700 dark:text-slate-200">124 задачи</span> — это на <span class="font-semibold text-emerald-600 dark:text-emerald-400">18% больше</span>, чем в августе. Продолжайте в том же духе!</p>
+                </div>
+
+                <!-- Month Selector Dropdown -->
+                <div class="relative inline-block text-left">
+                    <button class="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <span>Сентябрь 2026</span>
+                        <svg class="w-4 h-4 text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Top KPI Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                
+                <!-- Card 1: Completed Tasks -->
+                <div class="bg-white dark:bg-[#1e293b] p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-slate-500 dark:text-slate-400">Выполнено задач</span>
+                            <div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-baseline gap-3">
+                            <span class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">124</span>
+                            <span class="inline-flex items-center text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                                <svg class="w-3.5 h-3.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                                18%
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">к прошлому месяцу</p>
+                    </div>
+                    <!-- Mini Chart 1 -->
+                    <div class="mt-4 h-12 w-full flex items-end gap-1">
+                        <div class="w-1/10 bg-emerald-100 dark:bg-emerald-950/30 rounded-t h-[30%]"></div>
+                        <div class="w-1/10 bg-emerald-100 dark:bg-emerald-950/30 rounded-t h-[45%]"></div>
+                        <div class="w-1/10 bg-emerald-200 dark:bg-emerald-900/40 rounded-t h-[40%]"></div>
+                        <div class="w-1/10 bg-emerald-200 dark:bg-emerald-900/40 rounded-t h-[60%]"></div>
+                        <div class="w-1/10 bg-emerald-300 dark:bg-emerald-800/50 rounded-t h-[55%]"></div>
+                        <div class="w-1/10 bg-emerald-400 dark:bg-emerald-700/60 rounded-t h-[70%]"></div>
+                        <div class="w-1/10 bg-emerald-500 rounded-t h-[65%]"></div>
+                        <div class="w-1/10 bg-emerald-500 rounded-t h-[80%]"></div>
+                        <div class="w-1/10 bg-emerald-500 rounded-t h-[85%]"></div>
+                        <div class="w-1/10 bg-emerald-500 rounded-t h-[100%]"></div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Created Tasks -->
+                <div class="bg-white dark:bg-[#1e293b] p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-slate-500 dark:text-slate-400">Создано задач</span>
+                            <div class="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-baseline gap-3">
+                            <span class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">138</span>
+                            <span class="inline-flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400">
+                                <svg class="w-3.5 h-3.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                                18%
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">к прошлому месяцу</p>
+                    </div>
+                    <!-- Mini Chart 2 -->
+                    <div class="mt-4 h-12 w-full flex items-end gap-1">
+                        <div class="w-1/10 bg-blue-100 dark:bg-blue-950/30 rounded-t h-[40%]"></div>
+                        <div class="w-1/10 bg-blue-100 dark:bg-blue-950/30 rounded-t h-[35%]"></div>
+                        <div class="w-1/10 bg-blue-200 dark:bg-blue-900/40 rounded-t h-[50%]"></div>
+                        <div class="w-1/10 bg-blue-200 dark:bg-blue-900/40 rounded-t h-[45%]"></div>
+                        <div class="w-1/10 bg-blue-300 dark:bg-blue-800/50 rounded-t h-[60%]"></div>
+                        <div class="w-1/10 bg-blue-400 dark:bg-blue-700/60 rounded-t h-[70%]"></div>
+                        <div class="w-1/10 bg-blue-500 rounded-t h-[65%]"></div>
+                        <div class="w-1/10 bg-blue-500 rounded-t h-[75%]"></div>
+                        <div class="w-1/10 bg-blue-500 rounded-t h-[90%]"></div>
+                        <div class="w-1/10 bg-blue-500 rounded-t h-[100%]"></div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Plan Completion -->
+                <div class="bg-white dark:bg-[#1e293b] p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-slate-500 dark:text-slate-400">Выполнение плана</span>
+                            <div class="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-950/50 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-baseline gap-3">
+                            <span class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">89.9%</span>
+                            <span class="inline-flex items-center text-xs font-semibold text-purple-600 dark:text-purple-400">
+                                <svg class="w-3.5 h-3.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                                7%
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">к прошлому месяцу</p>
+                    </div>
+                    <!-- Mini Chart 3 -->
+                    <div class="mt-4 h-12 w-full flex items-end gap-1">
+                        <div class="w-1/10 bg-purple-100 dark:bg-purple-950/30 rounded-t h-[50%]"></div>
+                        <div class="w-1/10 bg-purple-100 dark:bg-purple-950/30 rounded-t h-[60%]"></div>
+                        <div class="w-1/10 bg-purple-200 dark:bg-purple-900/40 rounded-t h-[55%]"></div>
+                        <div class="w-1/10 bg-purple-200 dark:bg-purple-900/40 rounded-t h-[65%]"></div>
+                        <div class="w-1/10 bg-purple-300 dark:bg-purple-800/50 rounded-t h-[70%]"></div>
+                        <div class="w-1/10 bg-purple-400 dark:bg-purple-700/60 rounded-t h-[65%]"></div>
+                        <div class="w-1/10 bg-purple-500 rounded-t h-[75%]"></div>
+                        <div class="w-1/10 bg-purple-500 rounded-t h-[80%]"></div>
+                        <div class="w-1/10 bg-purple-500 rounded-t h-[85%]"></div>
+                        <div class="w-1/10 bg-purple-500 rounded-t h-[100%]"></div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Overdue Tasks -->
+                <div class="bg-white dark:bg-[#1e293b] p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-slate-500 dark:text-slate-400">Просроченные задачи</span>
+                            <div class="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-950/50 flex items-center justify-center text-rose-600 dark:text-rose-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-baseline gap-3">
+                            <span class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">16</span>
+                            <span class="inline-flex items-center text-xs font-semibold text-rose-600 dark:text-rose-400">
+                                <svg class="w-3.5 h-3.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                                25%
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">к прошлому месяцу</p>
+                    </div>
+                    <!-- Mini Chart 4 -->
+                    <div class="mt-4 h-12 w-full flex items-end gap-1">
+                        <div class="w-1/10 bg-rose-100 dark:bg-rose-950/30 rounded-t h-[90%]"></div>
+                        <div class="w-1/10 bg-rose-100 dark:bg-rose-950/30 rounded-t h-[80%]"></div>
+                        <div class="w-1/10 bg-rose-200 dark:bg-rose-900/40 rounded-t h-[70%]"></div>
+                        <div class="w-1/10 bg-rose-200 dark:bg-rose-900/40 rounded-t h-[75%]"></div>
+                        <div class="w-1/10 bg-rose-300 dark:bg-rose-800/50 rounded-t h-[60%]"></div>
+                        <div class="w-1/10 bg-rose-400 dark:bg-rose-700/60 rounded-t h-[50%]"></div>
+                        <div class="w-1/10 bg-rose-500 rounded-t h-[45%]"></div>
+                        <div class="w-1/10 bg-rose-500 rounded-t h-[40%]"></div>
+                        <div class="w-1/10 bg-rose-500 rounded-t h-[30%]"></div>
+                        <div class="w-1/10 bg-rose-500 rounded-t h-[25%]"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Middle Section: Main Chart & Insights -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Left: Main Chart Area -->
+                <div class="lg:col-span-2 bg-white dark:bg-[#1e293b] p-6 lg:p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <!-- Chart header controls -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-900 dark:text-white">Динамика выполнения задач</h2>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <!-- Legend & Toggle buttons -->
+                                <div class="flex items-center gap-4 text-xs font-medium text-slate-600 dark:text-slate-400">
+                                    <div class="flex items-center gap-1.5 cursor-pointer">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                                        <span>Выполнено</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 cursor-pointer">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-sky-300"></span>
+                                        <span>Создано</span>
+                                    </div>
+                                </div>
+
+                                <!-- Period dropdown -->
+                                <div class="relative">
+                                    <button class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300">
+                                        <span>По дням</span>
+                                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Interactive Chart Simulation -->
+                        <div class="relative h-64 w-full mt-6 flex flex-col justify-between">
+                            <!-- Y-axis background grid lines -->
+                            <div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                                <div class="w-full border-b border-slate-100 dark:border-slate-800/80 flex items-center"><span class="text-[11px] text-slate-400 -ml-6">30</span></div>
+                                <div class="w-full border-b border-slate-100 dark:border-slate-800/80 flex items-center"><span class="text-[11px] text-slate-400 -ml-6">20</span></div>
+                                <div class="w-full border-b border-slate-100 dark:border-slate-800/80 flex items-center"><span class="text-[11px] text-slate-400 -ml-6">10</span></div>
+                                <div class="w-full border-b border-slate-100 dark:border-slate-800/80 flex items-center"><span class="text-[11px] text-slate-400 -ml-6">0</span></div>
+                            </div>
+
+                            <!-- Chart Bars & Line Visual Representation -->
+                            <div class="relative z-10 h-full flex items-end justify-between px-2 gap-1 sm:gap-2">
+                                <!-- Day bars (1 to 30) -->
+                                <!-- 1 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-200 dark:bg-sky-950/60 rounded-t h-[35%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 2 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-200 dark:bg-sky-950/60 rounded-t h-[42%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 3 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-200 dark:bg-sky-950/60 rounded-t h-[38%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 4 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-200 dark:bg-sky-950/60 rounded-t h-[48%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 5 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[55%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 6 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-200 dark:bg-sky-950/60 rounded-t h-[45%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 7 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-200 dark:bg-sky-950/60 rounded-t h-[40%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 8 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[50%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 9 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[52%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 10 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[48%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 11 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[45%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 12 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[53%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 13 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[58%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 14 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[68%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 15 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[52%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 16 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[50%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 17 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[52%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 18 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[60%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 19 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[50%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 20 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[52%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 21 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[55%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 22 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[62%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 23 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[50%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 24 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[50%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 25 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[55%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 26 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[58%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 27 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[65%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 28 (Tooltip day) -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer relative">
+                                    <div class="w-full max-w-[12px] bg-sky-400 rounded-t h-[72%]"></div>
+                                    <!-- Tooltip box matching the image -->
+                                    <div class="absolute -top-16 left-1/2 -translate-x-1/2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-xl rounded-xl p-2.5 z-30 whitespace-nowrap text-xs">
+                                        <div class="font-semibold text-slate-800 dark:text-slate-200 mb-1">28 сентября</div>
+                                        <div class="flex items-center gap-3 text-slate-600 dark:text-slate-400">
+                                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-600"></span> Выполнено: 18</span>
+                                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-300"></span> Создано: 22</span>
+                                        </div>
+                                    </div>
+                                    <!-- Vertical dashed selection line -->
+                                    <div class="absolute bottom-0 w-[1px] h-48 border-r border-dashed border-blue-500"></div>
+                                </div>
+                                <!-- 29 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[60%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                                <!-- 30 -->
+                                <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer">
+                                    <div class="w-full max-w-[12px] bg-sky-300 dark:bg-sky-900/60 rounded-t h-[58%] group-hover:bg-sky-400 transition-colors"></div>
+                                </div>
+                            </div>
+
+                            <!-- SVG Line overlay representing completed tasks trend -->
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none overflow-visible" preserveAspectRatio="none" viewBox="0 0 1000 200">
+                                <path d="M 15 150 Q 50 140, 85 130 T 155 120 T 225 100 T 295 130 T 365 115 T 435 110 T 505 125 T 575 110 T 645 90 T 715 115 T 785 115 T 855 90 T 925 85 T 985 95" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+
+                        <!-- X Axis Labels -->
+                        <div class="flex justify-between text-xs text-slate-400 mt-3 px-1">
+                            <span>1 сент</span>
+                            <span>5 сент</span>
+                            <span>10 сент</span>
+                            <span>15 сент</span>
+                            <span>20 сент</span>
+                            <span>25 сент</span>
+                            <span>30 сент</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Key Insights Card -->
+                <div class="bg-white dark:bg-[#1e293b] p-6 lg:p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-6">
+                            <div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                            </div>
+                            <h2 class="text-lg font-bold text-slate-900 dark:text-white">Ключевые инсайты</h2>
+                        </div>
+
+                        <div class="space-y-5">
+                            <!-- Insight 1 -->
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-7 h-7 rounded-full bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400">Самый продуктивный день</p>
+                                    <p class="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">12 сентября <span class="text-slate-500 font-normal">(14 задач)</span></p>
+                                </div>
+                            </div>
+
+                            <!-- Insight 2 -->
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-7 h-7 rounded-full bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0 mt-0.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400">Самый активный проект</p>
+                                    <p class="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">CRM</p>
+                                </div>
+                            </div>
+
+                            <!-- Insight 3 -->
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-7 h-7 rounded-full bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400">Выполнено на 18% больше задач,</p>
+                                    <p class="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">чем в прошлом месяце</p>
+                                </div>
+                            </div>
+
+                            <!-- Insight 4 -->
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-7 h-7 rounded-full bg-purple-50 dark:bg-purple-950/50 flex items-center justify-center text-purple-600 dark:text-purple-400 shrink-0 mt-0.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400">Количество просроченных задач</p>
+                                    <p class="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">снизилось на 25%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+                        <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 transition-colors">
+                            <span>Подробнее</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Section: Overdue Tasks & Projects -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-10">
+                
+                <!-- Bottom Left: Overdue Breakdown & Average Overdue Time -->
+                <div class="bg-white dark:bg-[#1e293b] p-6 lg:p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-lg font-bold text-slate-900 dark:text-white">Просроченные задачи</h2>
+                            <a href="#" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">Все задачи &gt;</a>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                            <!-- Left: Total and Priority breakdown -->
+                            <div class="bg-slate-50/80 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-800">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <div class="w-6 h-6 rounded-lg bg-rose-50 dark:bg-rose-950/50 flex items-center justify-center text-rose-600">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    </div>
+                                    <span class="text-2xl font-bold text-slate-900 dark:text-white">16</span>
+                                    <span class="text-xs text-slate-400">просрочено</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-semibold text-rose-600 dark:text-rose-400 mb-4">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                                    <span>25% к прошлому месяцу</span>
+                                </div>
+
+                                <div class="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-700 text-xs">
+                                    <div class="flex justify-between items-center">
+                                        <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-400"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Высокий приоритет</span>
+                                        <span class="font-semibold text-slate-800 dark:text-slate-200">7</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-400"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Средний приоритет</span>
+                                        <span class="font-semibold text-slate-800 dark:text-slate-200">6</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-400"><span class="w-2 h-2 rounded-full bg-slate-400"></span> Низкий приоритет</span>
+                                        <span class="font-semibold text-slate-800 dark:text-slate-200">3</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Average Overdue Time Card -->
+                            <div class="bg-slate-50/80 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-800 flex flex-col justify-between h-full">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <div class="w-6 h-6 rounded-lg bg-rose-50 dark:bg-rose-950/50 flex items-center justify-center text-rose-600">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        </div>
+                                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Средний срок просрочки</span>
+                                    </div>
+                                    <div class="my-3">
+                                        <span class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">3.2 дня</span>
+                                    </div>
+                                </div>
+                                <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                                    <span>40% к прошлому месяцу</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Right: Projects List with Progress Bars -->
+                <div class="bg-white dark:bg-[#1e293b] p-6 lg:p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-lg font-bold text-slate-900 dark:text-white">Проекты</h2>
+                            <a href="#" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">Все проекты &gt;</a>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Project 1: CRM -->
+                            <div class="flex items-center justify-between gap-4 text-sm">
+                                <div class="flex items-center gap-2.5 w-32 shrink-0">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                                    <span class="font-medium text-slate-700 dark:text-slate-300 truncate">CRM</span>
+                                </div>
+                                <div class="flex-1 bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-blue-500 h-full rounded-full" style="width: 83%"></div>
+                                </div>
+                                <div class="w-24 text-right shrink-0 flex items-center justify-end gap-3 text-xs">
+                                    <span class="text-slate-400">35 / 42</span>
+                                    <span class="font-semibold text-slate-800 dark:text-slate-200 w-8">83%</span>
+                                </div>
+                            </div>
+
+                            <!-- Project 2: Mobile App -->
+                            <div class="flex items-center justify-between gap-4 text-sm">
+                                <div class="flex items-center gap-2.5 w-32 shrink-0">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                    <span class="font-medium text-slate-700 dark:text-slate-300 truncate">Mobile App</span>
+                                </div>
+                                <div class="flex-1 bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-emerald-500 h-full rounded-full" style="width: 75%"></div>
+                                </div>
+                                <div class="w-24 text-right shrink-0 flex items-center justify-end gap-3 text-xs">
+                                    <span class="text-slate-400">27 / 36</span>
+                                    <span class="font-semibold text-slate-800 dark:text-slate-200 w-8">75%</span>
+                                </div>
+                            </div>
+
+                            <!-- Project 3: Marketing -->
+                            <div class="flex items-center justify-between gap-4 text-sm">
+                                <div class="flex items-center gap-2.5 w-32 shrink-0">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
+                                    <span class="font-medium text-slate-700 dark:text-slate-300 truncate">Marketing</span>
+                                </div>
+                                <div class="flex-1 bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-purple-500 h-full rounded-full" style="width: 64%"></div>
+                                </div>
+                                <div class="w-24 text-right shrink-0 flex items-center justify-end gap-3 text-xs">
+                                    <span class="text-slate-400">18 / 28</span>
+                                    <span class="font-semibold text-slate-800 dark:text-slate-200 w-8">64%</span>
+                                </div>
+                            </div>
+
+                            <!-- Project 4: Website -->
+                            <div class="flex items-center justify-between gap-4 text-sm">
+                                <div class="flex items-center gap-2.5 w-32 shrink-0">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+                                    <span class="font-medium text-slate-700 dark:text-slate-300 truncate">Website</span>
+                                </div>
+                                <div class="flex-1 bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-rose-400 h-full rounded-full" style="width: 60%"></div>
+                                </div>
+                                <div class="w-24 text-right shrink-0 flex items-center justify-end gap-3 text-xs">
+                                    <span class="text-slate-400">15 / 25</span>
+                                    <span class="font-semibold text-slate-800 dark:text-slate-200 w-8">60%</span>
+                                </div>
+                            </div>
+
+                            <!-- Project 5: Design -->
+                            <div class="flex items-center justify-between gap-4 text-sm">
+                                <div class="flex items-center gap-2.5 w-32 shrink-0">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                    <span class="font-medium text-slate-700 dark:text-slate-300 truncate">Design</span>
+                                </div>
+                                <div class="flex-1 bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-amber-500 h-full rounded-full" style="width: 67%"></div>
+                                </div>
+                                <div class="w-24 text-right shrink-0 flex items-center justify-end gap-3 text-xs">
+                                    <span class="text-slate-400">12 / 18</span>
+                                    <span class="font-semibold text-slate-800 dark:text-slate-200 w-8">67%</span>
+                                </div>
+                            </div>
+
+                            <!-- Project 6: Другие -->
+                            <div class="flex items-center justify-between gap-4 text-sm">
+                                <div class="flex items-center gap-2.5 w-32 shrink-0">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                                    <span class="font-medium text-slate-700 dark:text-slate-300 truncate">Другие</span>
+                                </div>
+                                <div class="flex-1 bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-slate-400 h-full rounded-full" style="width: 71%"></div>
+                                </div>
+                                <div class="w-24 text-right shrink-0 flex items-center justify-end gap-3 text-xs">
+                                    <span class="text-slate-400">17 / 24</span>
+                                    <span class="font-semibold text-slate-800 dark:text-slate-200 w-8">71%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function setTheme(theme) {
+            const html = document.documentElement;
+            const lightBtn = document.getElementById('lightThemeBtn');
+            const darkBtn = document.getElementById('darkThemeBtn');
+
+            if (theme === 'dark') {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                darkBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm font-semibold";
+                lightBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900";
+            } else {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                lightBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all bg-white text-slate-900 shadow-sm font-semibold";
+                darkBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900";
+            }
+        }
+
+        // Initialize theme based on preference
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(savedTheme);
+        });
+    </script>
+</body>
+</html>
